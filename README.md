@@ -16,7 +16,8 @@ Trayecta/
 ├── docker/                                    # Entorno de desarrollo: Moodle 5.1 + PostgreSQL 16 (ver docker/README.md)
 ├── docs/
 │   ├── ERS.md                                 # Especificación de Requisitos de Software
-│   └── PRM-1_tabla_reglas_ILS_formatos.md     # Tabla de reglas ILS a formatos (REQ-REC-002)
+│   ├── PRM-1_tabla_reglas_ILS_formatos.md     # Tabla de reglas ILS a formatos (REQ-REC-002)
+│   └── PRM-5_estudio_viabilidad.md            # Estudio de viabilidad: Trayecta dentro de Moodle (REQ-INT-001, REQ-INT-005)
 ├── .gitignore
 ├── LICENSE                                    # Licencia MIT
 └── README.md
