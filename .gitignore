@@ -1,0 +1,30 @@
+# Entorno y sistema operativo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Editores e IDEs
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs y temporales
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# Entornos y dependencias
+.env
+.env.local
+node_modules/
+vendor/
+__pycache__/
+*.py[cod]
+.venv/
+env/
