@@ -1,0 +1,5 @@
+# Plugins de terceros que necesita el curso restaurado (FIS_TECNM2025).
+# Formato: <ruta dentro de public/> <url del zip>
+# Versiones compatibles con Moodle 5.1 según el directorio de plugins de Moodle.
+course/format/tiles https://marketplace.moodle.com/api/plugins/format_tiles/versions/2026012570/download
+mod/hvp https://marketplace.moodle.com/api/plugins/mod_hvp/versions/2026090101/download
