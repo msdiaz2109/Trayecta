@@ -1,7 +1,15 @@
 # PRM-1 · Tabla de reglas entre el ILS y los formatos
 
-> **Tarea Jira:** [PRM-1](https://yoaguilar78.atlassian.net/browse/PRM-1) · **Requisito:** REQ-REC-002 · **Estado:** borrador para revisión del asesor
-> **Formatos del catálogo (REQ-REC-001; antes REQ-PER-004):** video, podcast, texto, simulación, ejercicio, infografía.
+> **Proyecto:** Aplicación web de perfilamiento multidimensional del estudiante y motor de recomendación de rutas de aprendizaje integrado a Moodle  
+> **Tarea Jira:** PRM-1  
+>  
+> **Requisitos relacionados:** REQ-REC-002  
+>  
+> **Responsable:** Alfredo Aguilar  
+>  
+> **Estado:** Borrador para revisión del asesor  
+
+**Formatos del catálogo (REQ-REC-001; antes REQ-PER-004):** video, podcast, texto, simulación, ejercicio, infografía.
 
 ## 1. Dimensiones del ILS
 
