@@ -1,7 +1,15 @@
 # PRM-5 · Estudio de viabilidad: Trayecta dentro de Moodle sin registros extra
 
-> **Tarea Jira:** [PRM-5](https://yoaguilar78.atlassian.net/browse/PRM-5) · **Requisitos:** REQ-INT-001, REQ-INT-005 · **Estado:** borrador para revisión del asesor · **Fecha:** 2026-10-21
-> **Entorno verificado:** Moodle 5.1.8 + PostgreSQL 16 de pruebas (entorno Docker de PRM-8) con el curso FIS_TECNM2025 restaurado. Los datos de la instancia institucional quedan por confirmar (sección 5).
+> **Proyecto:** Aplicación web de perfilamiento multidimensional del estudiante y motor de recomendación de rutas de aprendizaje integrado a Moodle  
+> **Tarea Jira:** PRM-5  
+>  
+> **Requisitos relacionados:** REQ-INT-001, REQ-INT-005  
+>  
+> **Responsable:** Alfredo Aguilar  
+>  
+> **Estado:** Borrador para revisión del asesor  
+
+**Fecha:** 2026-10-21. **Entorno verificado:** Moodle 5.1.8 + PostgreSQL 16 de pruebas (entorno Docker de PRM-8) con el curso FIS_TECNM2025 restaurado. Los datos de la instancia institucional quedan por confirmar (sección 5).
 
 ## Respuestas
 
