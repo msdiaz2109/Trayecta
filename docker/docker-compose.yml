@@ -1,0 +1,60 @@
+# Entorno de desarrollo de Trayecta: Moodle 5.1 (PHP 8.3) + PostgreSQL 16.
+# Se ejecuta con Docker Engine dentro de Ubuntu en WSL. Ver docker/README.md.
+name: trayecta
+
+x-moodle: &moodle
+  image: moodlehq/moodle-php-apache:8.3
+  environment:
+    # Moodle 5.1 sirve la web desde public/; config.php queda en la raíz.
+    APACHE_DOCUMENT_ROOT: /var/www/html/public
+    MOODLE_WWWROOT: ${MOODLE_WWWROOT}
+    DB_NAME: ${DB_NAME}
+    DB_USER: ${DB_USER}
+    DB_PASSWORD: ${DB_PASSWORD}
+  volumes:
+    - ${MOODLE_DIR}:/var/www/html
+    - ./moodle/config.php:/var/www/html/config.php:ro
+    - ./php/zz-trayecta.ini:/usr/local/etc/php/conf.d/zz-trayecta.ini:ro
+    - moodledata:/var/www/moodledata
+    - ${BACKUPS_DIR}:/backups:ro
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  moodle:
+    <<: *moodle
+    ports:
+      - "${MOODLE_PORT}:80"
+    restart: unless-stopped
+
+  # Cron de Moodle cada minuto (tareas programadas y ad hoc).
+  cron:
+    <<: *moodle
+    entrypoint: []
+    user: www-data
+    command: >
+      bash -c 'while true; do
+        [ -f /var/www/moodledata/.instalado ] && php /var/www/html/admin/cli/cron.php --keep-alive=0 >/dev/null 2>&1;
+        sleep 60;
+      done'
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  moodledata:

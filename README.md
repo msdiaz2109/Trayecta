@@ -13,6 +13,7 @@ Proyecto de titulación para la carrera de Ingeniería en Sistemas Computacional
 
 ```text
 Trayecta/
+├── docker/                                    # Entorno de desarrollo: Moodle 5.1 + PostgreSQL 16 (ver docker/README.md)
 ├── docs/
 │   ├── ERS.md                                 # Especificación de Requisitos de Software
 │   └── PRM-1_tabla_reglas_ILS_formatos.md     # Tabla de reglas ILS a formatos (REQ-REC-002)
