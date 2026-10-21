@@ -21,6 +21,11 @@ Trayecta/
 └── README.md
 ```
 
+## Ramas y flujo de trabajo
+
+- `main`: Código y versiones estables para producción.
+- `develop`: Rama principal de desarrollo activo. Las ramas de características e incidencias se desprenden e integran aquí.
+
 ## Licencia
 
 Este proyecto está distribuido bajo la licencia [MIT](LICENSE).
