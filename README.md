@@ -17,7 +17,8 @@ Trayecta/
 ├── docs/
 │   ├── ERS.md                                 # Especificación de Requisitos de Software
 │   ├── PRM-1_tabla_reglas_ILS_formatos.md     # Tabla de reglas ILS a formatos (REQ-REC-002)
-│   └── PRM-5_estudio_viabilidad.md            # Estudio de viabilidad: Trayecta dentro de Moodle (REQ-INT-001, REQ-INT-005)
+│   ├── PRM-5_estudio_viabilidad.md            # Estudio de viabilidad: Trayecta dentro de Moodle (REQ-INT-001, REQ-INT-005)
+│   └── PRM-6_flujo_proceso.md                 # Flujo del proceso por rol dentro de Moodle (ERS 2.1.2)
 ├── .gitignore
 ├── LICENSE                                    # Licencia MIT
 └── README.md
