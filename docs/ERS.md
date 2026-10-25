@@ -15,8 +15,9 @@ Autores: Aguilar Garnica Alfredo y Meneses Díaz Mariana Sofía. Asesor: DCE. Cl
 | ----------------------------------------------------- | ---------- | ----------------- | -------- |
 | Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía | 2026-10-06 | Borrador inicial  | 1.0      |
 | Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía | 2026-10-20 | Cambio de alcance: el sistema vive solo dentro de Moodle (configuración nativa o plugin) y el perfil pasa a un cuestionario integral (psicométrico, Felder y trayectoria) | 1.1 |
+| Aguilar Garnica Alfredo | 2026-10-25 | Resuelto el pendiente 1 de la sección 2.8: variante de implementación = plugin de Moodle (sección 2.5), con base en el estudio de viabilidad (PRM-5). Pendiente de ratificación del asesor | 1.2 |
 
-> En la versión 1.1, los puntos marcados con **[Pendiente]** están por definir con el asesor. La lista completa está en la sección 2.8.
+> En la versión 1.2 se resolvió el punto 1 de la sección 2.8 (variante de implementación: plugin de Moodle), a falta de que el asesor la ratifique. Los demás puntos marcados con **[Pendiente]** siguen por definir con el asesor; la lista completa está en la sección 2.8.
 
 ### 1. Introducción
 
@@ -26,7 +27,7 @@ Este documento especifica los requisitos del sistema, integrado dentro de Moodle
 
 #### 1.2 Alcance
 
-El producto, llamado en este documento "la aplicación", funciona completamente dentro de Moodle 5.1, construido con la configuración nativa de Moodle o como un plugin de Moodle (la variante está pendiente, sección 2.8). No hay una aplicación externa. La aplicación:
+El producto, llamado en este documento "la aplicación", funciona completamente dentro de Moodle 5.1, construido como un plugin de Moodle (sección 2.5; pendiente de ratificación del asesor, sección 2.8). No hay una aplicación externa. La aplicación:
 
 Aplica un cuestionario integral de perfilamiento con tres partes:
 
@@ -105,9 +106,9 @@ La aplicación es un componente interno de Moodle, la plataforma LMS institucion
 
 ##### 2.1.1 Interfaces del sistema
 
-Aplicación ↔ Moodle 5.1: la aplicación usa las funciones internas de Moodle (grupos, restricciones de acceso, cuestionarios y registros de actividad) y, si se elige plugin, su API de plugins.
+Aplicación ↔ Moodle 5.1: la aplicación usa las funciones internas de Moodle (grupos, restricciones de acceso, registros de actividad) y su API de plugins.
 
-Moodle ↔ PostgreSQL 16: base de datos única de Moodle. Si se elige plugin, sus tablas propias viven en esta misma base de datos.
+Moodle ↔ PostgreSQL 16: base de datos única de Moodle. Las tablas propias del plugin viven en esta misma base de datos.
 
 ##### 2.1.2 Interfaces de usuario
 
@@ -126,8 +127,8 @@ No se requiere hardware especial. El servidor es el equipo institucional que alo
 | Servidor web                       | Apache 2.4                                                       |
 | Moodle                             | 5.1 (con PHP 8.3)                                                |
 | Base de datos | PostgreSQL 16 (la de Moodle) |
-| Lenguaje de la aplicación | PHP 8.3 (el de Moodle) si se elige plugin; configuración nativa de Moodle en la otra variante **[Pendiente]** |
-| Pruebas unitarias | Según la variante: PHPUnit si se elige plugin **[Pendiente]** |
+| Lenguaje de la aplicación | PHP 8.3 (el de Moodle), como plugin |
+| Pruebas unitarias | PHPUnit, la herramienta de pruebas de Moodle |
 | Visualización de resultados       | Python (matplotlib, seaborn) y Power BI, fuera de la aplicación |
 
 ##### 2.1.5 Interfaces de comunicación
@@ -144,7 +145,7 @@ El uso normal incluye el perfilamiento inicial, la generación de rutas, la sinc
 
 ##### 2.1.8 Requisitos de adaptación del sitio
 
-Para llevarla a otra instancia de Moodle 5.1 se instala el plugin o se replica la configuración nativa, y se configuran sin cambiar código: los cursos habilitados, el texto del consentimiento informado, el catálogo de objetos con sus metadatos y etiquetas de acceso, y los parámetros del motor de recomendación.
+Para llevarla a otra instancia de Moodle 5.1 se instala el plugin, y se configuran sin cambiar código: los cursos habilitados, el texto del consentimiento informado, el catálogo de objetos con sus metadatos y etiquetas de acceso, y los parámetros del motor de recomendación.
 
 ##### 2.1.9 Interfaz con servicios
 
@@ -152,7 +153,7 @@ La aplicación no se integra con ningún servicio fuera de Moodle. No depende de
 
 #### 2.2 Funciones del producto
 
-Funcionar dentro de Moodle, con su configuración nativa o como plugin.
+Funcionar dentro de Moodle, como plugin.
 
 Aplicar el cuestionario integral (psicométrico, Felder y trayectoria) y construir el perfil multidimensional.
 
@@ -179,7 +180,7 @@ Administrar roles, parámetros y seguridad.
 
 #### 2.4 Limitaciones
 
-La aplicación no modifica el núcleo de Moodle: solo usa su configuración nativa o su API de plugins.
+La aplicación no modifica el núcleo de Moodle: solo usa su API de plugins.
 
 Las versiones de software son fijas y las define el equipo del proyecto (sección 2.1.4).
 
@@ -201,9 +202,9 @@ Los estudiantes están inscritos formalmente y tienen acceso activo a Moodle.
 
 El servidor institucional ofrece las versiones indicadas y conexión estable.
 
-**Decisiones de diseño.** Son seis decisiones del diseño. Cinco ya están decididas y una está pendiente. Para cada punto se indica qué se decidió y el criterio con el que se verifica en un entorno de pruebas de Moodle.
+**Decisiones de diseño.** Son seis decisiones del diseño. Las seis están decididas; la primera a falta de que el asesor la ratifique. Para cada punto se indica qué se decidió y el criterio con el que se verifica en un entorno de pruebas de Moodle.
 
-**Variante de implementación (pendiente).** La aplicación vive solo dentro de Moodle. Se elige entre construirla con la configuración nativa de Moodle (cuestionarios, grupos, restricciones de acceso, campos de perfil e informes) o como un plugin de Moodle con tablas y tareas programadas propias. El criterio es que la variante permita cumplir los requisitos de la sección 3, en especial asignar etiquetas, mantener ocultos los recursos nuevos y calcular el perfil y la ruta, sin modificar el núcleo de Moodle.
+**Variante de implementación (decidido 2026-10-25, pendiente de ratificación del asesor).** La aplicación vive solo dentro de Moodle, como un plugin de Moodle (`local_trayecta`) con tablas, tareas programadas y observadores de eventos propios, siguiendo la API de plugins de Moodle. Se descarta la configuración nativa: automatizar lo que piden los requisitos de la sección 3 (asignar etiquetas sin trabajo manual del docente, ocultar los recursos nuevos, correr el proceso periódico y calcular el perfil y la ruta) necesita una tarea programada y un observador de eventos, y Moodle solo permite darlos de alta desde un plugin. El estudio de viabilidad (PRM-5) encontró además que los servicios web de Moodle 5.1 no tienen ninguna función para escribir restricciones de acceso ni para leer los registros de actividad, lo que también descarta automatizarlo por esa vía. El criterio con el que se verifica es que la variante permita cumplir los requisitos de la sección 3, en especial asignar etiquetas, mantener ocultos los recursos nuevos y calcular el perfil y la ruta, sin modificar el núcleo de Moodle.
 
 **Autenticación del estudiante (decidido).** El estudiante usa su sesión de Moodle: la aplicación vive dentro del curso y toma de Moodle su identidad, su curso y su rol (REQ-INT-001). No se manejan contraseñas propias, no se modifica el núcleo y el estudiante no inicia sesión dos veces.
 
@@ -233,9 +234,9 @@ Los requisitos detallados, con identificador único y criterio de aceptación, e
 
 #### 2.8 Pendientes de la versión 1.1
 
-El cambio de alcance de la versión 1.1 deja abiertos estos puntos, que se resuelven con el asesor:
+El cambio de alcance de la versión 1.1 deja abiertos estos puntos, que se resuelven con el asesor (el punto 1 ya se decidió en la versión 1.2, a falta de su ratificación):
 
-1. Variante de implementación: configuración nativa de Moodle o plugin (sección 2.5). De ella dependen el lenguaje, el almacenamiento (sección 3.5) y la herramienta de pruebas unitarias (sección 3.6).
+1. ~~Variante de implementación: configuración nativa de Moodle o plugin (sección 2.5).~~ **Decidido en la v1.2, pendiente de ratificación del asesor:** plugin de Moodle. De ella dependían el lenguaje, el almacenamiento (sección 3.5) y la herramienta de pruebas unitarias (sección 3.6), ya actualizados en esas secciones.
 2. Instrumento, escalas y puntuación de la parte psicométrica (REQ-PER-010).
 3. Datos que forman la trayectoria académica y de dónde se toman (REQ-PER-011).
 4. De dónde salen el formato preferido del estudiante y su nivel por unidad, que antes daban REQ-PER-003 y REQ-PER-004 y que necesitan las etiquetas de acceso (REQ-INT-004).
@@ -269,7 +270,7 @@ Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejempl
 | REQ-INT-002 | La aplicación obtiene de Moodle los contenidos de los cursos habilitados.                                                                                                                                                                                                                                                                                                                                                                                                                   | Los objetos del curso aparecen en el catálogo de la aplicación tras una sincronización, y los recursos nuevos reciben automáticamente sus etiquetas de acceso. La sincronización se ejecuta en un intervalo corto (REQ-RND-004), de modo que un recurso nuevo queda restringido en pocos minutos.          |
 | REQ-INT-003 | La aplicación obtiene de los registros de Moodle los datos de interacción de cada estudiante con los recursos del curso: accesos (cuándo y cuántas veces entra a cada recurso), tiempo en recurso (cuánto permanece en él), secuencia de navegación (el orden en que recorre los recursos) y calificaciones parciales (resultados de actividades y evaluaciones). Estos datos alimentan la actualización del perfil (REQ-PER-008) y el ajuste de la ruta (REQ-REC-006). | Tras una sincronización, los cuatro tipos de dato quedan almacenados por estudiante y por recurso, con su fecha, y no se duplican registros si la sincronización se repite. Un estudiante sin actividad aparece sin datos y no genera error.                                                                  |
 | REQ-INT-004 | La aplicación publica en Moodle la ruta asignada a cada estudiante y restringe su acceso a ella: el estudiante solo ve los recursos que quedan después del perfilamiento. Para ello le asigna etiquetas de acceso (nivel por unidad y formato), y cada recurso de Moodle recibe automáticamente las etiquetas que exige, a partir del formato, la unidad y el nivel que indicó quien lo subió.                                                                                          | El estudiante ve en Moodle solo los recursos de su ruta, los demás no están disponibles para él, y un cambio de ruta actualiza lo que ve.                                                                                                                                                                    |
-| REQ-INT-005 | La aplicación funciona solo dentro de Moodle, con su configuración nativa o como plugin, sin modificar su núcleo. | No hay cambios al código del núcleo de Moodle ni componentes fuera de Moodle. La instalación se hace con la configuración nativa o con la instalación estándar de un plugin. |
+| REQ-INT-005 | La aplicación funciona solo dentro de Moodle, como plugin, sin modificar su núcleo. | No hay cambios al código del núcleo de Moodle ni componentes fuera de Moodle. La instalación se hace con la instalación estándar de un plugin. |
 | REQ-INT-006 | La aplicación maneja las fallas del proceso periódico que asigna etiquetas y lee la interacción. Si el proceso falla, el estudiante conserva las etiquetas que ya tenía, porque quedan guardadas en Moodle como grupos; los recursos nuevos siguen ocultos hasta recibir sus etiquetas (REQ-INT-007) y los estudiantes nuevos no ven recursos hasta completar el perfilamiento. La aplicación avisa al administrador tras varios intentos fallidos. | Si el proceso falla, la aplicación reintenta y registra el error sin perder datos. Durante la falla, ningún estudiante pierde el acceso que ya tenía ni ve recursos nuevos sin etiquetas. Tras un número de reintentos fallidos configurable, el administrador recibe un aviso. |
 | REQ-INT-007 | Los recursos nuevos permanecen ocultos para los estudiantes hasta recibir sus etiquetas de acceso. Si la aplicación no puede ocultarlos automáticamente, el docente los sube ocultos y la aplicación los muestra al asignarles las etiquetas.                                                                                                                                                                                                                                            | Un recurso nuevo no es visible para ningún estudiante antes de la sincronización. Después de ella, solo lo ven quienes cumplen su combinación de etiquetas.                                                                                                                                                 |
 | REQ-INT-008 | Las actividades calificadas y los exámenes no se restringen por etiquetas de acceso. Solo se restringen los recursos de estudio.                                                                                                                                                                                                                                                                                                                                                            | Ninguna actividad calificada ni examen tiene restricciones por etiquetas, y todos los estudiantes inscritos los ven y los presentan en las mismas condiciones.                                                                                                                                                  |
@@ -355,7 +356,7 @@ Los valores son metas propuestas y se ajustan con el asesor y la prueba piloto.
 
 #### 3.5 Requisitos lógicos de bases de datos
 
-La aplicación guarda sus datos en la base de datos PostgreSQL 16 de Moodle: en tablas propias si se elige plugin, o en las estructuras nativas de Moodle (grupos, campos de perfil, cuestionarios) en la otra variante **[Pendiente]**.
+La aplicación guarda sus datos en tablas propias del plugin, en la base de datos PostgreSQL 16 de Moodle. Las etiquetas de acceso siguen siendo grupos de Moodle (decisión de la sección 2.5).
 
 
 | Entidad                  | Contenido principal                                                                                                                           |
@@ -375,7 +376,7 @@ Restricciones: integridad referencial entre entidades, un solo perfil vigente po
 
 #### 3.6 Restricciones de diseño
 
-Moodle 5.1 con PHP 8.3 y PostgreSQL 16. La aplicación se construye con la configuración nativa de Moodle o como plugin con su API de plugins **[Pendiente]**.
+Moodle 5.1 con PHP 8.3 y PostgreSQL 16. La aplicación se construye como un plugin de Moodle, con su API de plugins.
 
 Sin modificar el núcleo de Moodle ni depender de componentes fuera de Moodle.
 
@@ -383,7 +384,7 @@ Desarrollo con Scrum adaptado a la investigación aplicada (Fitzgerald et al., 2
 
 Código y configuración en un repositorio de GitHub con licencia MIT.
 
-Pruebas unitarias con la herramienta que corresponda a la variante (PHPUnit si se elige plugin) **[Pendiente]**.
+Pruebas unitarias con PHPUnit, la herramienta de pruebas de Moodle.
 
 #### 3.7 Cumplimiento de estándares
 
@@ -406,7 +407,7 @@ Metadatos educativos con la lógica de IEEE LOM (Wiley, 2002).
 | Disponibilidad | Disponible durante el horario académico del curso.                                                                              | Meta propuesta de 95 % o más en ese horario.                                       |
 | Seguridad      | Acceso por rol, HTTPS, mínimo de datos personales y bitácora de accesos (REQ-SEG-001 a REQ-SEG-004). | Las pruebas de seguridad no encuentran accesos indebidos ni datos expuestos.        |
 | Mantenibilidad | Código modular, documentado y con pruebas automatizadas.                                                                        | Existe manual técnico con diagramas de componentes, secuencia y modelo de datos.   |
-| Portabilidad | Transferible a cualquier instancia de Moodle 5.1. | La instalación en otra instancia se hace instalando el plugin o replicando la configuración nativa, sin cambiar código. |
+| Portabilidad | Transferible a cualquier instancia de Moodle 5.1. | La instalación en otra instancia se hace instalando el plugin, sin cambiar código. |
 
 Requisitos de seguridad:
 
@@ -430,7 +431,7 @@ Requisito de operación:
 
 | Método                                    | Qué verifica                                                                        | Requisitos                         |
 | ------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------------------------- |
-| Pruebas unitarias (herramienta según la variante) | Puntuación de cada parte del cuestionario integral (empezando por el ILS), construcción del perfil, reglas y combinación híbrida del motor | REQ-PER, REQ-REC |
+| Pruebas unitarias (PHPUnit) | Puntuación de cada parte del cuestionario integral (empezando por el ILS), construcción del perfil, reglas y combinación híbrida del motor | REQ-PER, REQ-REC |
 | Pruebas de integración | Lectura de datos de Moodle, proceso periódico y publicación de rutas (etiquetas y restricciones) | REQ-INT, REQ-EVA-001 |
 | Pruebas funcionales                        | Flujos completos de estudiante, docente y administrador                              | REQ-PER, REQ-REC, REQ-EVA, REQ-ADM |
 | Pruebas de seguridad                       | Control de acceso por rol, HTTPS y exposición de datos, con base en OWASP Top 10    | REQ-SEG, REQ-ADM-001               |
@@ -451,5 +452,3 @@ Las evidencias de validación son el reporte de pruebas automatizadas, los regis
 | OE2. Cuestionario integral de perfilamiento | Perfilamiento | REQ-PER-001 a REQ-PER-011 (sin REQ-PER-003 a 005, retirados) |
 | OE3. Relación perfil-rutas       | Motor de recomendación   | REQ-REC-001 a REQ-REC-011 |
 | OE4. Usabilidad y funcionamiento  | Seguimiento y evaluación | REQ-EVA, REQ-USA, REQ-RND |
-
-<iframe sandbox="allow-scripts allow-same-origin" aria-hidden="true" tabindex="-1" referrerpolicy="no-referrer" src="https://aif.notion.so/aif-production.html"></iframe>
