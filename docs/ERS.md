@@ -1,51 +1,51 @@
-# ERS CHIDILLO
-
-## Especificación de Requisitos de Software (ERS)
+# Especificación de Requisitos de Software (ERS)
 
 **Aplicación web de perfilamiento multidimensional del estudiante y motor de recomendación de rutas de aprendizaje integrado a Moodle**
 
 Documento basado en la plantilla IEEE/ISO/IEC 29148-2018. Instituto Tecnológico de Morelia, Departamento de Sistemas y Computación.
 
-Autores: Aguilar Garnica Alfredo y Meneses Díaz Mariana Sofía. Asesor: DCE. Claudio Ernesto Florián Arenas.
+Autores: Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía y Salvador Alejos Soria. Asesor: DCE. Claudio Ernesto Florián Arenas.
 
-### Historial de revisiones
+## Historial de revisiones
 
 
-| Nombre                                                | Fecha      | Motivo del cambio | Versión |
+| Nombre | Fecha | Motivo del cambio | Versión |
 | ----------------------------------------------------- | ---------- | ----------------- | -------- |
-| Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía | 2026-10-06 | Borrador inicial  | 1.0      |
-| Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía | 2026-10-20 | Cambio de alcance: el sistema vive solo dentro de Moodle (configuración nativa o plugin) y el perfil pasa a un cuestionario integral (psicométrico, Felder y trayectoria) | 1.1 |
-| Aguilar Garnica Alfredo | 2026-10-25 | Resuelto el pendiente 1 de la sección 2.8: variante de implementación = plugin de Moodle (sección 2.5), con base en el estudio de viabilidad (PRM-5). Pendiente de ratificación del asesor | 1.2 |
+| Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía | 2026-10-06 | Borrador inicial (aplicación externa en Python/Flask con REST/LTI). | 1.0 |
+| Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía | 2026-10-20 | Cambio de alcance: el sistema vive solo dentro de Moodle (configuración nativa o plugin) y el perfil pasa a un cuestionario integral (psicométrico, Felder y trayectoria). | 1.1 |
+| Aguilar Garnica Alfredo | 2026-10-25 | Resuelto el pendiente 1 de la sección 2.8: variante de implementación = plugin de Moodle (`local_trayecta`), con base en el estudio de viabilidad (PRM-5). Pendiente de ratificación del asesor. | 1.2 |
+| Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía, Salvador Alejos Soria | 2026-10-25 | Ajuste de arquitectura y esquema de perfilamiento: definición de 4 herramientas (H1: ILS Felder-Silverman; H2: preferencias de formato y disponibilidad; H3: módulo psicométrico obligatorio según indique el docente; H4: examen diagnóstico por unidad dentro de la plataforma aplicado al inicio de cada nueva unidad con reactivos del docente); y evaluación cuasiexperimental de impacto académico (cohorte experimental con Trayecta vs. cohorte de control con Moodle estándar). | 1.3 |
 
-> En la versión 1.2 se resolvió el punto 1 de la sección 2.8 (variante de implementación: plugin de Moodle), a falta de que el asesor la ratifique. Los demás puntos marcados con **[Pendiente]** siguen por definir con el asesor; la lista completa está en la sección 2.8.
+> En la versión 1.3 se estructura el perfilamiento en cuatro herramientas: tres iniciales (H1: ILS Felder-Silverman, H2: preferencias de formato y disponibilidad de tiempo, H3: módulo psicométrico obligatorio según indique el docente) y una modular (H4: examen diagnóstico por unidad temático, aplicado dentro de Moodle al comenzar cada nueva unidad con reactivos proporcionados por el docente). Asimismo, se establece el diseño cuasiexperimental de evaluación dividiendo al grupo en dos cohortes (experimental con Trayecta y control con Moodle estándar) para comparar el rendimiento académico en evaluaciones finales oficiales.
 
-### 1. Introducción
+## 1. Introducción
 
-#### 1.1 Propósito
+### 1.1 Propósito
 
-Este documento especifica los requisitos del sistema, integrado dentro de Moodle, que construye un perfil multidimensional del estudiante y genera rutas de aprendizaje personalizadas. Su finalidad es servir de base común para el diseño, el desarrollo y la verificación del sistema, y se alinea con los cuatro objetivos específicos del protocolo de investigación. El sistema se desarrolla porque los estudiantes de la materia de Fundamentos de Ingeniería de Software accederán a los mismos recursos sin considerar sus características psicométricas, su estilo de aprendizaje ni su trayectoria académica.
+Este documento especifica los requisitos del sistema, integrado dentro de Moodle, que construye un perfil multidimensional del estudiante, genera rutas de aprendizaje personalizadas y permite evaluar su impacto académico mediante un diseño cuasiexperimental. Su finalidad es servir de base común para el diseño, el desarrollo y la verificación del sistema, y se alinea con los cuatro objetivos específicos del protocolo de investigación. El sistema se desarrolla porque los estudiantes de la materia de Fundamentos de Ingeniería de Software habitualmente acceden a los mismos recursos didácticos de manera homogénea, sin considerar su estilo de aprendizaje, su contexto/conocimientos previos ni sus rasgos cognitivos o psicométricos.
 
-#### 1.2 Alcance
+### 1.2 Alcance
 
-El producto, llamado en este documento "la aplicación", funciona completamente dentro de Moodle 5.1, construido como un plugin de Moodle (sección 2.5; pendiente de ratificación del asesor, sección 2.8). No hay una aplicación externa. La aplicación:
+El producto, llamado en este documento "la aplicación", funciona completamente dentro de Moodle 5.1, construido como un plugin local de Moodle (`local_trayecta`) (sección 2.5; pendiente de ratificación del asesor, sección 2.8). No existe una aplicación externa. La aplicación:
 
-Aplica un cuestionario integral de perfilamiento con tres partes:
+1. **Aplica un esquema de perfilamiento multidimensional estructurado en cuatro herramientas:**
+   - **Fase de perfilamiento inicial (al comenzar el curso):**
+     - **Herramienta 1 — Estilos de aprendizaje:** mediante el cuestionario *Index of Learning Styles* (ILS) de Felder-Silverman (44 reactivos dicotómicos que evalúan las cuatro dimensiones bipolares).
+     - **Herramienta 2 — Preferencias de formato y disponibilidad de tiempo:** cuestionario que consolida la ponderación declarada de formatos didácticos (escala 1 a 5 para video, podcast, texto/PDF, simulación, ejercicio e infografía) y el presupuesto temporal de estudio (horas estimadas por semana y franjas horarias preferidas).
+     - **Herramienta 3 — Módulo psicométrico obligatorio:** evaluación psicométrica estandarizada (no opcional) para identificar rasgos cognitivos y conductuales del estudiante, cuyo instrumento oficial, escalas y criterios de evaluación son determinados por el profesor titular/asesor.
+   - **Fase de diagnóstico dinámico por unidad (durante el semestre):**
+     - **Herramienta 4 — Examen diagnóstico por unidad:** instrumento de conocimientos previos que se aplica dentro de la plataforma Moodle **cada vez que el grupo va a comenzar una nueva unidad temática** (no al inicio en conjunto con las demás herramientas). El banco de reactivos y claves es proporcionado por el profesor titular de la materia. Determina el nivel de partida del estudiante en dicha unidad (`U{n}-bajo`, `U{n}-medio`, `U{n}-alto`) para activar las restricciones y recomendaciones personalizadas correspondientes a ese bloque temático.
+2. **Construye un perfil multidimensional por estudiante** y lo actualiza continuamente con datos de interacción y desempeño obtenidos de la bitácora interna de Moodle.
+3. **Genera rutas personalizadas de objetos de aprendizaje** mediante un motor de recomendación híbrido (reglas pedagógicas iniciales y filtrado colaborativo), publicándolas a través de etiquetas de acceso basadas en grupos nativos y restricciones de disponibilidad de Moodle.
+4. **Permite la evaluación cuasiexperimental de impacto académico:** divide a los estudiantes inscritos en dos cohortes:
+   - **Grupo experimental:** estudiantes que reciben las rutas personalizadas de estudio adaptadas a su perfil a través de Trayecta.
+   - **Grupo de control:** estudiantes que acceden a los recursos del curso bajo el modelo uniforme estándar de Moodle (sin restricciones por etiquetas ni personalización).
+   Al final del periodo, la aplicación contrasta el desempeño académico en los exámenes y evaluaciones oficiales del curso (que son idénticos e irrestrictos para ambos grupos), la tasa de aprobación, la permanencia/retención y aplica la escala SUS de usabilidad a la cohorte experimental.
+5. **Ofrece al docente un panel analítico** con la distribución de perfiles, el seguimiento comparativo entre el grupo experimental y el de control, y la trazabilidad de interacción con los materiales.
 
-Psicométrica.
+La aplicación no modifica el código del núcleo de Moodle, no accede a bases de datos externas, no crea contenidos didácticos por sí misma y no sustituye la evaluación del docente. El alcance comprende un prototipo funcional evaluado en la materia de Fundamentos de Ingeniería de Software de la carrera de ISC del ITM.
 
-Estilos de aprendizaje (Index of Learning Styles de Felder-Silverman).
-
-Trayectoria académica.
-
-Construye un perfil multidimensional por estudiante y lo actualiza con datos de interacción obtenidos de Moodle.
-
-Genera rutas de objetos de aprendizaje mediante un motor de recomendación híbrido, basado inicialmente en reglas y filtrado colaborativo.
-
-Mide la usabilidad con la escala SUS y ofrece al docente un panel con la distribución de perfiles por grupo.
-
-La aplicación no modifica el núcleo de Moodle, no crea contenidos didácticos y no sustituye la evaluación del docente. El alcance llega hasta un prototipo funcional evaluado, dirigido a los estudiantes de la materia de Fundamentos de Ingeniería de Software de la carrera de ISC del ITM. El beneficio esperado es personalizar la experiencia de aprendizaje sin aumentar la carga del docente.
-
-#### 1.3 Referencias
+### 1.3 Referencias
 
 IEEE/ISO/IEC 29148:2018. Systems and software engineering: Life cycle processes: Requirements engineering.
 
@@ -65,7 +65,7 @@ Slade, S., & Prinsloo, P. (2013). Learning analytics: Ethical issues and dilemma
 
 Wiley, D. A. (2002). Connecting learning objects to instructional design theory. En D. A. Wiley (Ed.), **The Instructional Use of Learning Objects**. Agency for Instructional Technology.
 
-#### 1.4 Términos
+### 1.4 Términos
 
 
 | Término                         | Definición                                                                                                                                                          |
@@ -81,7 +81,7 @@ Wiley, D. A. (2002). Connecting learning objects to instructional design theory.
 | Plugin de Moodle | Componente que se instala en Moodle con su API de plugins y amplía sus funciones sin modificar su núcleo. |
 | Censo                            | Trabajo con la totalidad de los grupos disponibles, sin muestreo probabilístico.                                                                                    |
 
-#### 1.5 Abreviaturas
+### 1.5 Abreviaturas
 
 
 | Abreviatura | Significado                               |
@@ -98,27 +98,27 @@ Wiley, D. A. (2002). Connecting learning objects to instructional design theory.
 | SUS         | System Usability Scale                    |
 | TecNM       | Tecnológico Nacional de México          |
 
-### 2. Descripción general del producto
+## 2. Descripción general del producto
 
-#### 2.1 Perspectiva del producto
+### 2.1 Perspectiva del producto
 
 La aplicación es un componente interno de Moodle, la plataforma LMS institucional del ITM, que la amplía sin modificar su núcleo. Se ejecuta dentro de la propia instancia de Moodle y usa su base de datos PostgreSQL 16. Toma de Moodle los contenidos, los usuarios inscritos, las calificaciones y los registros de actividad, y publica las rutas recomendadas para que el estudiante las siga en el mismo curso.
 
-##### 2.1.1 Interfaces del sistema
+#### 2.1.1 Interfaces del sistema
 
 Aplicación ↔ Moodle 5.1: la aplicación usa las funciones internas de Moodle (grupos, restricciones de acceso, registros de actividad) y su API de plugins.
 
 Moodle ↔ PostgreSQL 16: base de datos única de Moodle. Las tablas propias del plugin viven en esta misma base de datos.
 
-##### 2.1.2 Interfaces de usuario
+#### 2.1.2 Interfaces de usuario
 
 La interfaz es la de Moodle, en español y adaptable a pantallas de computadora y de teléfono. El estudiante trabaja dentro de su curso de Moodle: acepta el consentimiento informado, contesta el cuestionario integral, consulta su perfil y recibe su ruta de aprendizaje con el motivo de cada recomendación. El docente consulta un panel con la distribución de perfiles por grupo y el avance de las rutas. El administrador configura el catálogo de objetos de aprendizaje y los parámetros del motor.
 
-##### 2.1.3 Interfaces de hardware
+#### 2.1.3 Interfaces de hardware
 
 No se requiere hardware especial. El servidor es el equipo institucional que aloja a Moodle, y los usuarios acceden con cualquier dispositivo que tenga un navegador web actual.
 
-##### 2.1.4 Interfaces de software
+#### 2.1.4 Interfaces de software
 
 
 | Componente                         | Versión                                                         |
@@ -131,45 +131,49 @@ No se requiere hardware especial. El servidor es el equipo institucional que alo
 | Pruebas unitarias | PHPUnit, la herramienta de pruebas de Moodle |
 | Visualización de resultados       | Python (matplotlib, seaborn) y Power BI, fuera de la aplicación |
 
-##### 2.1.5 Interfaces de comunicación
+#### 2.1.5 Interfaces de comunicación
 
 No hay comunicación por red entre la aplicación y Moodle, porque la aplicación se ejecuta dentro de Moodle. Los usuarios acceden a Moodle por HTTPS desde el navegador.
 
-##### 2.1.6 Restricciones de memoria
+#### 2.1.6 Restricciones de memoria
 
 La población estimada es de 60 a 80 estudiantes en 2 o 3 grupos, por lo que no se prevén restricciones críticas de memoria. El almacenamiento crecerá sobre todo con los registros de interacción y debe confirmarse con la administración del servidor.
 
-##### 2.1.7 Operaciones
+#### 2.1.7 Operaciones
 
 El uso normal incluye el perfilamiento inicial, la generación de rutas, la sincronización periódica de datos de interacción y la consulta de paneles. Las tareas administrativas son mantener el catálogo de objetos, ajustar parámetros del motor y exportar datos. Los datos de la aplicación viven en la base de datos de Moodle y se incluyen en sus respaldos periódicos, con un procedimiento de restauración documentado en el manual técnico.
 
-##### 2.1.8 Requisitos de adaptación del sitio
+#### 2.1.8 Requisitos de adaptación del sitio
 
 Para llevarla a otra instancia de Moodle 5.1 se instala el plugin, y se configuran sin cambiar código: los cursos habilitados, el texto del consentimiento informado, el catálogo de objetos con sus metadatos y etiquetas de acceso, y los parámetros del motor de recomendación.
 
-##### 2.1.9 Interfaz con servicios
+#### 2.1.9 Interfaz con servicios
 
 La aplicación no se integra con ningún servicio fuera de Moodle. No depende de servicios en la nube ni de plataformas externas. Power BI se usa solo para analizar datos exportados.
 
-#### 2.2 Funciones del producto
+### 2.2 Funciones del producto
 
-Funcionar dentro de Moodle, como plugin.
+La aplicación ofrece funciones diferenciadas para cada rol del sistema:
 
-Aplicar el cuestionario integral (psicométrico, Felder y trayectoria) y construir el perfil multidimensional.
+**Para el estudiante:**
+- **Consentimiento informado:** aceptación obligatoria antes de acceder a cualquier funcionalidad o contenido.
+- **Perfilamiento inicial (Herramientas 1, 2 y 3):** el estudiante responde al incorporarse al curso el ILS (H1), el cuestionario de preferencias de formato y disponibilidad de tiempo (H2) y el examen psicométrico obligatorio (H3).
+- **Diagnóstico modular por unidad (Herramienta 4):** cada vez que inicia una nueva unidad temática en la materia, el estudiante presenta dentro de Moodle el examen diagnóstico correspondiente a esa unidad (elaborado por el docente). Su resultado determina su nivel inicial en la unidad (`bajo`, `medio` o `alto`).
+- **Ruta de aprendizaje personalizada (Grupo experimental):** los estudiantes asignados a la cohorte experimental visualizan los recursos didácticos recomendados y adaptados a su estilo y nivel de la unidad en curso, organizados en bloques semanales según su disponibilidad horaria.
+- **Visualización estándar (Grupo de control):** los estudiantes asignados a la cohorte de control acceden a todos los recursos didácticos de la unidad en el formato uniforme nativo de Moodle, sin restricciones de etiquetas ni personalización.
+- **Evaluaciones oficiales comunes:** todos los estudiantes (experimental y control) presentan las actividades calificadas y exámenes oficiales en las mismas condiciones y sin restricciones de acceso (REQ-INT-008).
+- **Evaluación final de usabilidad:** los estudiantes de la cohorte experimental contestan la escala SUS y retroalimentación cualitativa al concluir su intervención.
 
-Mantener un catálogo de objetos de aprendizaje con metadatos.
+**Para el docente:**
+- **Clasificación de objetos de aprendizaje:** etiquetado de recursos del curso con metadatos de unidad temática, formato didáctico, nivel y duración estimada según IEEE LOM.
+- **Suministro del banco de reactivos:** provisión de los reactivos y claves para la Herramienta 4 (diagnóstico por unidad) previo al arranque de cada unidad temática.
+- **Panel analítico de seguimiento:** visualización de la distribución de perfiles del grupo, avance en las rutas personalizadas y métricas comparativas de interacción y rendimiento académico entre el grupo experimental y el de control.
+- **Control pedagógico:** posibilidad de desbloquear recursos específicos para estudiantes que lo soliciten justificadamente.
 
-Generar y ajustar rutas de aprendizaje con un motor híbrido.
+**Para el administrador:**
+- Configuración de parámetros generales del plugin en Moodle, administración de la cohorte (asignación a grupo experimental o control), monitoreo de tareas programadas (cron) y bitácora de fallas.
 
-Registrar la interacción del estudiante y actualizar su perfil.
-
-Aplicar la escala SUS y un cuestionario de satisfacción.
-
-Mostrar paneles al docente y exportar datos para análisis.
-
-Administrar roles, parámetros y seguridad.
-
-#### 2.3 Características del usuario
+### 2.3 Características del usuario
 
 
 | Usuario       | Descripción                                                                                                                                                                     |
@@ -178,7 +182,7 @@ Administrar roles, parámetros y seguridad.
 | Docente       | Responsable de la materia. Publica los contenidos, consulta los paneles y no necesita conocimientos de programación.                                                            |
 | Administrador | Personal técnico que instala, configura y respalda el sistema. Exportan datos anonimizados para el análisis.                                                                   |
 
-#### 2.4 Limitaciones
+### 2.4 Limitaciones
 
 La aplicación no modifica el núcleo de Moodle: solo usa su API de plugins.
 
@@ -192,7 +196,7 @@ El filtrado colaborativo tiene el problema del arranque en frío (Schein et al.,
 
 El alcance llega hasta un prototipo funcional evaluado en un solo programa académico.
 
-#### 2.5 Supuestos y dependencias
+### 2.5 Supuestos y dependencias
 
 Moodle 5.1 está operativo y el equipo tiene permisos de administrador para configurarlo e instalar plugins.
 
@@ -216,7 +220,7 @@ El servidor institucional ofrece las versiones indicadas y conexión estable.
 
 **Tiempo de retención de los datos (decidido).** Los datos de los estudiantes se mantienen tal cual en la base de datos, sin eliminarlos ni transformarlos. Es responsabilidad del investigador anonimizarlos cada vez que cite o publique resultados, de modo que ningún dato identificable aparezca en artículos, memorias, presentaciones o reportes (REQ-SEG-003). El aviso de privacidad y el consentimiento informado (REQ-PER-001) informan al estudiante de esta conservación.
 
-#### 2.6 Distribución de requisitos
+### 2.6 Distribución de requisitos
 
 
 | Módulo                              | Prefijo                    | Objetivo específico |
@@ -228,24 +232,24 @@ El servidor institucional ofrece las versiones indicadas y conexión estable.
 | Administración y seguridad          | REQ-ADM, REQ-SEG           | OE1 a OE4            |
 | Usabilidad, rendimiento y operación | REQ-USA, REQ-RND, REQ-OPER | OE4                  |
 
-#### 2.7 Requisitos especificados
+### 2.7 Requisitos especificados
 
 Los requisitos detallados, con identificador único y criterio de aceptación, están en la sección 3. Los valores numéricos de rendimiento y tiempo son metas propuestas que se confirman con el asesor y se ajustan tras la prueba piloto.
 
-#### 2.8 Pendientes de la versión 1.1
+### 2.8 Pendientes y acuerdos con el docente y asesor
 
-El cambio de alcance de la versión 1.1 deja abiertos estos puntos, que se resuelven con el asesor (el punto 1 ya se decidió en la versión 1.2, a falta de su ratificación):
+El diseño del sistema y los acuerdos de trabajo establecen el siguiente estado para las definiciones técnicas y metodológicas:
 
-1. ~~Variante de implementación: configuración nativa de Moodle o plugin (sección 2.5).~~ **Decidido en la v1.2, pendiente de ratificación del asesor:** plugin de Moodle. De ella dependían el lenguaje, el almacenamiento (sección 3.5) y la herramienta de pruebas unitarias (sección 3.6), ya actualizados en esas secciones.
-2. Instrumento, escalas y puntuación de la parte psicométrica (REQ-PER-010).
-3. Datos que forman la trayectoria académica y de dónde se toman (REQ-PER-011).
-4. De dónde salen el formato preferido del estudiante y su nivel por unidad, que antes daban REQ-PER-003 y REQ-PER-004 y que necesitan las etiquetas de acceso (REQ-INT-004).
-5. Si la ruta conserva los bloques semanales sin el dato de disponibilidad (REQ-PER-005, retirado; REQ-REC-005).
-6. Actualizar en el protocolo el nombre de OE1 ("Arquitectura cliente-API-LMS") y de OE2 para que coincidan con este documento.
+1. ~~Variante de implementación: configuración nativa de Moodle o plugin (sección 2.5).~~ **Resuelto en v1.2, pendiente de ratificación formal del asesor:** plugin local de Moodle (`local_trayecta`), sustentado en el estudio de viabilidad técnica (PRM-5).
+2. **Instrumento psicométrico oficial (Herramienta 3):** Es un componente obligatorio del perfilamiento; el profesor titular/asesor indicará el instrumento psicométrico específico validado que se aplicará en la plataforma (batería, reactivos, escalas y forma de ponderación).
+3. **Banco de reactivos del examen diagnóstico por unidad (Herramienta 4):** El docente titular entregará el banco oficial de preguntas y respuestas para el diagnóstico de cada unidad temática de Fundamentos de Ingeniería de Software. Estos exámenes se configuran en Moodle para aplicarse al iniciar cada unidad, no al comienzo del curso.
+4. **Estructura de Herramienta 2 (Preferencias y disponibilidad):** Definida formalmente como cuestionario inicial que integra formatos didácticos (1 a 5) y disponibilidad semanal de estudio (horas/semana y franjas habituales).
+5. **Protocolo de partición de cohortes (Grupo Experimental vs. Grupo de Control):** Definir con el docente el método de asignación (aleatorio simple o estratificado) para asegurar que ambas mitades sean estadísticamente comparables al final del semestre (REQ-EVA-002).
+6. Actualizar en el protocolo de investigación el nombre de OE1 ("Arquitectura cliente-API-LMS") y OE2 para alinearlos con la arquitectura interna de plugin en Moodle.
 
-### 3. Requisitos específicos
+## 3. Requisitos específicos
 
-#### 3.1 Interfaces externas
+### 3.1 Interfaces externas
 
 
 | Interfaz                    | Entradas                                                                            | Salidas                                                                                     | Formato                                                                  |
@@ -255,13 +259,13 @@ El cambio de alcance de la versión 1.1 deja abiertos estos puntos, que se resue
 | Estudiante (navegador) | Consentimiento, respuestas del cuestionario integral, SUS y cuestionario de satisfacción | Perfil, ruta de aprendizaje y motivos de la recomendación | Formularios de Moodle |
 | Docente (navegador)         | Filtros por grupo y solicitud de exportación                                       | Paneles de distribución de perfiles y avance. Datos para análisis                         | Páginas web con gráficos y exportación en csv de los datos del alumno |
 
-#### 3.2 Funciones
+### 3.2 Funciones
 
-##### Identificación y trazabilidad de requisitos
+#### Identificación y trazabilidad de requisitos
 
 Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejemplo, REQ-PER-002) y se liga a un objetivo específico (OE1 a OE4) según la sección 2.6. Los criterios de aceptación son medibles y se verifican con los métodos de la sección 4.
 
-##### Integración con Moodle (OE1)
+#### Integración con Moodle (OE1)
 
 
 | ID          | Requisito                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Criterio de aceptación                                                                                                                                                                                                                                                                                         |
@@ -269,7 +273,7 @@ Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejempl
 | REQ-INT-001 | La aplicación identifica a cada estudiante con su sesión de Moodle. | Solo un estudiante inscrito accede a su información, y un usuario no inscrito es rechazado. |
 | REQ-INT-002 | La aplicación obtiene de Moodle los contenidos de los cursos habilitados.                                                                                                                                                                                                                                                                                                                                                                                                                   | Los objetos del curso aparecen en el catálogo de la aplicación tras una sincronización, y los recursos nuevos reciben automáticamente sus etiquetas de acceso. La sincronización se ejecuta en un intervalo corto (REQ-RND-004), de modo que un recurso nuevo queda restringido en pocos minutos.          |
 | REQ-INT-003 | La aplicación obtiene de los registros de Moodle los datos de interacción de cada estudiante con los recursos del curso: accesos (cuándo y cuántas veces entra a cada recurso), tiempo en recurso (cuánto permanece en él), secuencia de navegación (el orden en que recorre los recursos) y calificaciones parciales (resultados de actividades y evaluaciones). Estos datos alimentan la actualización del perfil (REQ-PER-008) y el ajuste de la ruta (REQ-REC-006). | Tras una sincronización, los cuatro tipos de dato quedan almacenados por estudiante y por recurso, con su fecha, y no se duplican registros si la sincronización se repite. Un estudiante sin actividad aparece sin datos y no genera error.                                                                  |
-| REQ-INT-004 | La aplicación publica en Moodle la ruta asignada a cada estudiante y restringe su acceso a ella: el estudiante solo ve los recursos que quedan después del perfilamiento. Para ello le asigna etiquetas de acceso (nivel por unidad y formato), y cada recurso de Moodle recibe automáticamente las etiquetas que exige, a partir del formato, la unidad y el nivel que indicó quien lo subió.                                                                                          | El estudiante ve en Moodle solo los recursos de su ruta, los demás no están disponibles para él, y un cambio de ruta actualiza lo que ve.                                                                                                                                                                    |
+| REQ-INT-004 | La aplicación publica en Moodle la ruta asignada a cada estudiante del grupo experimental y restringe su acceso a ella mediante etiquetas de acceso (grupos) y restricciones de disponibilidad. Los estudiantes del grupo de control acceden a todos los recursos de estudio de manera uniforme sin restricciones impuestas por Trayecta. Para ello le asigna etiquetas de acceso (nivel por unidad y formato), y cada recurso de Moodle recibe automáticamente las etiquetas que exige, a partir del formato, la unidad y el nivel que indicó quien lo subió.                                                                                          | El estudiante ve en Moodle solo los recursos de su ruta, los demás no están disponibles para él, y un cambio de ruta actualiza lo que ve.                                                                                                                                                                    |
 | REQ-INT-005 | La aplicación funciona solo dentro de Moodle, como plugin, sin modificar su núcleo. | No hay cambios al código del núcleo de Moodle ni componentes fuera de Moodle. La instalación se hace con la instalación estándar de un plugin. |
 | REQ-INT-006 | La aplicación maneja las fallas del proceso periódico que asigna etiquetas y lee la interacción. Si el proceso falla, el estudiante conserva las etiquetas que ya tenía, porque quedan guardadas en Moodle como grupos; los recursos nuevos siguen ocultos hasta recibir sus etiquetas (REQ-INT-007) y los estudiantes nuevos no ven recursos hasta completar el perfilamiento. La aplicación avisa al administrador tras varios intentos fallidos. | Si el proceso falla, la aplicación reintenta y registra el error sin perder datos. Durante la falla, ningún estudiante pierde el acceso que ya tenía ni ve recursos nuevos sin etiquetas. Tras un número de reintentos fallidos configurable, el administrador recibe un aviso. |
 | REQ-INT-007 | Los recursos nuevos permanecen ocultos para los estudiantes hasta recibir sus etiquetas de acceso. Si la aplicación no puede ocultarlos automáticamente, el docente los sube ocultos y la aplicación los muestra al asignarles las etiquetas.                                                                                                                                                                                                                                            | Un recurso nuevo no es visible para ningún estudiante antes de la sincronización. Después de ella, solo lo ven quienes cumplen su combinación de etiquetas.                                                                                                                                                 |
@@ -277,24 +281,24 @@ Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejempl
 | REQ-INT-009 | La aplicación detecta las altas y las bajas de estudiantes en cada sincronización. Un estudiante que se inscribe después de iniciado el curso hace el perfilamiento en su primer acceso. Un estudiante que se da de baja deja de ver los recursos de su ruta, queda marcado como baja y sus datos se conservan.                                                                                                                                                                           | Un estudiante nuevo aparece con el perfilamiento pendiente y no ve recursos de estudio hasta completarlo. Un estudiante dado de baja en Moodle queda marcado como baja, se le quitan las etiquetas, sus datos siguen en la base de datos y ya no cuenta en los paneles de grupos activos.                       |
 | REQ-INT-010 | Es obligatorio indicar el formato, la unidad y el nivel de un recurso de estudio para publicarlo. Un recurso sin esos datos no se publica: permanece oculto para los estudiantes, la aplicación lo marca como pendiente de clasificar y avisa al docente. Esto no aplica a las actividades calificadas ni a los exámenes (REQ-INT-008).                                                                                                                                                    | Un recurso de estudio sin formato, unidad o nivel permanece oculto, aparece como pendiente en el catálogo y no recibe etiquetas. Al completar esos datos recibe sus etiquetas en la siguiente sincronización.                                                                                                 |
 
-##### Perfilamiento (OE2)
+#### Perfilamiento (OE2)
 
 
 | ID          | Requisito                                                                                                                                                                                                                                                      | Criterio de aceptación                                                                                                                                                                                                            |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| REQ-PER-001 | El consentimiento informado es obligatorio para continuar: antes de cualquier instrumento, el estudiante debe aceptarlo, y sin su aceptación no avanza. Una vez aceptado, el consentimiento no se puede retirar durante el curso.                             | Sin consentimiento no se guarda ninguna respuesta ni se da acceso a los recursos de estudio, y la aceptación queda registrada con su fecha. La aplicación no ofrece una opción para retirar el consentimiento durante el curso. |
-| REQ-PER-002 | Como parte de estilos de aprendizaje del cuestionario integral, la aplicación aplica el ILS de 44 ítems con escala dicotómica y calcula las cuatro dimensiones bipolares.                                                                                                                                                   | En casos de prueba, los puntajes coinciden con la clave de calificación del ILS.                                                                                                                                                  |
-| REQ-PER-003 | **Retirado en v1.1.** El diagnóstico de conocimientos previos deja de ser un instrumento propio. El origen del nivel por unidad queda pendiente (sección 2.8). | — |
-| REQ-PER-004 | **Retirado en v1.1.** La preferencia de formato con escala Likert deja de ser un instrumento propio. La lista de formatos pasa a REQ-REC-001. | — |
-| REQ-PER-005 | **Retirado en v1.1.** La disponibilidad de tiempo deja de recogerse. Su papel en la ruta queda pendiente (REQ-REC-005, sección 2.8). | — |
-| REQ-PER-006 | La aplicación construye el perfil multidimensional con las tres partes del cuestionario integral. | Cada estudiante que termina el cuestionario tiene un perfil vigente consultable. |
-| REQ-PER-007 | El perfilamiento inicial es obligatorio: el estudiante no avanza ni recibe ruta hasta completarlo.                                                                                                                                                             | Mientras el perfilamiento no esté completo, el estudiante no ve ningún recurso de estudio. Un perfilamiento incompleto no genera ruta, y ese caso queda marcado como excluido.                                                   |
-| REQ-PER-008 | El perfil se actualiza con los datos de interacción. | Tras una sincronización, el perfil refleja la nueva evidencia y conserva su historial. |
-| REQ-PER-009 | La aplicación aplica el perfilamiento como un solo cuestionario integral con tres partes: psicométrica (REQ-PER-010), estilos de aprendizaje con el ILS (REQ-PER-002) y trayectoria académica (REQ-PER-011). | El estudiante contesta las tres partes en un solo flujo, sus respuestas quedan registradas por parte e ítem, y el perfilamiento solo se marca completo cuando las tres partes están contestadas. |
-| REQ-PER-010 | La aplicación aplica la parte psicométrica del cuestionario integral. **[Pendiente]** Instrumento, escalas y forma de puntuación. | Se obtiene el puntaje de cada escala por estudiante. **[Pendiente]** Criterio de verificación según el instrumento elegido. |
-| REQ-PER-011 | La aplicación recoge la trayectoria académica del estudiante. **[Pendiente]** Datos que la forman y si se toman del cuestionario, de Moodle o de ambos. | Los datos de trayectoria quedan almacenados por estudiante. **[Pendiente]** Criterio según los datos definidos. |
+| REQ-PER-001 | El consentimiento informado es obligatorio para continuar: antes de presentar cualquier instrumento, el estudiante debe aceptarlo; sin su aceptación no avanza ni accede a recursos. Una vez aceptado, no se puede revocar durante el curso.                | Sin consentimiento no se guarda ninguna respuesta ni se da acceso a los recursos de estudio, y la aceptación queda registrada con fecha y hora. La aplicación no ofrece opción para retirar el consentimiento durante el curso. |
+| REQ-PER-002 | **Herramienta 1 (Estilos de aprendizaje):** La aplicación aplica al inicio del curso el cuestionario ILS de Felder-Silverman de 44 ítems forzados dicotómicos ($a$ o $b$) y calcula las cuatro dimensiones bipolares (activo/reflexivo, sensorial/intuitivo, visual/verbal, secuencial/global). | Los puntajes calculados coinciden con la clave estandarizada de Felder-Silverman (rango entero impar en $[-11, +11]$ por dimensión). |
+| REQ-PER-003 | **Herramienta 2 (Preferencias de formato y disponibilidad horaria):** La aplicación aplica al inicio del curso el cuestionario que recopila la utilidad declarada de formatos didácticos (escala 1 a 5 para video, podcast, texto/PDF, simulación, ejercicio, infografía) y la disponibilidad de estudio (horas estimadas por semana de 2 a 20 h y franjas horarias habituales). | Se almacena el vector de preferencias de formato normalizado en $[0, 1]$ y el presupuesto de tiempo semanal para el fraccionamiento de bloques de estudio. |
+| REQ-PER-004 | **Herramienta 3 (Módulo psicométrico obligatorio):** La aplicación aplica en la fase de perfilamiento inicial el examen psicométrico estandarizado determinado por el docente/asesor (no opcional), registrando los rasgos conductuales y cognitivos evaluados. | Cada estudiante completa el instrumento psicométrico oficial y sus resultados se procesan y almacenan según los baremos definidos por el docente. |
+| REQ-PER-005 | **Herramienta 4 (Diagnóstico modular por unidad temática):** La aplicación aplica un examen diagnóstico dentro de Moodle **cada vez que el grupo va a comenzar una nueva unidad temática** (no al inicio del curso), utilizando el banco de reactivos provisto por el docente para dicha unidad. | Al iniciar una unidad, el estudiante del grupo experimental presenta el diagnóstico en Moodle y obtiene automáticamente su nivel de partida en esa unidad: `U{n}-bajo`, `U{n}-medio` o `U{n}-alto`, actualizando sus etiquetas de acceso para los recursos de dicha unidad. |
+| REQ-PER-006 | La aplicación construye el perfil multidimensional del estudiante integrando los resultados de las herramientas iniciales (H1, H2, H3) y los diagnósticos dinámicos por unidad (H4). | Cada estudiante evaluado cuenta con un perfil consolidado y vigente que combina sus estilos, preferencias, rasgos psicométricos y nivel en cada unidad activa. |
+| REQ-PER-007 | El perfilamiento inicial (H1, H2, H3) es obligatorio para ingresar al curso; asimismo, la presentación de la Herramienta 4 es requisito para acceder a los recursos personalizados de cada unidad que inicia. | Sin completar el perfilamiento inicial, el estudiante no ve ningún recurso de estudio. Al iniciar una nueva unidad, debe presentar el diagnóstico (H4) para que la aplicación le asigne su ruta de esa unidad. |
+| REQ-PER-008 | El perfil multidimensional se actualiza de forma continua con la evidencia de interacción obtenida de Moodle (accesos, tiempo de permanencia, secuencia y desempeño en evaluaciones). | Tras cada sincronización periódica, el perfil refleja el comportamiento real del estudiante y mantiene el histórico de versiones sin sobreescribir datos crudos. |
+| REQ-PER-009 | El flujo de perfilamiento se organiza en dos tiempos: una fase inicial única al inicio del curso (Herramientas 1, 2 y 3) y una fase modular recurrente al comenzar cada nueva unidad temática (Herramienta 4). | La plataforma administra el acceso a los cuestionarios iniciales en un solo flujo ordenado y habilita de forma programada el diagnóstico de cada unidad temática cuando el docente la abre en el curso. |
+| REQ-PER-010 | El módulo psicométrico (Herramienta 3) calcula los índices según la clave de calificación oficial determinada por el docente y los almacena en la entidad correspondiente. | Se calculan y validan los índices psicométricos sin inconsistencias numéricas ni omisión de reactivos. |
+| REQ-PER-011 | La aplicación registra el diagnóstico temático de cada unidad (Herramienta 4) en la tabla `nivel_por_unidad` y asigna de inmediato el grupo Moodle correspondiente (`U{n}-bajo`, `U{n}-medio` o `U{n}-alto`) al estudiante del grupo experimental. | El estudiante recibe su etiqueta de nivel de unidad dentro de los 5 minutos posteriores a la finalización del examen diagnóstico en la plataforma. |
 
-##### Motor de recomendación (OE3)
+#### Motor de recomendación (OE3)
 
 
 | ID          | Requisito                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Criterio de aceptación                                                                                                                                                                                                                                                                 |
@@ -311,7 +315,7 @@ Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejempl
 | REQ-REC-010 | El docente puede abrirle a un estudiante un recurso que quedó fuera de su ruta. El desbloqueo se aplica dando al estudiante una etiqueta de desbloqueo propia de ese recurso. El recurso desbloqueado sigue disponible aunque la ruta se recalcule, y el desbloqueo no modifica el perfil del estudiante.                                                                                                                                                                                                                                                              | El docente desbloquea un recurso para un estudiante y este lo ve en Moodle en su siguiente acceso. El desbloqueo queda registrado con docente, estudiante, recurso y fecha, y no se pierde al recalcular la ruta.                                                                       |
 | REQ-REC-011 | El docente puede marcar como obligatorio cualquier recurso que lleve etiquetas. Un recurso obligatorio lo ven todos los estudiantes que completaron el perfilamiento, sin importar sus etiquetas, para que ninguno se lo pierda.                                                                                                                                                                                                                                                                                                                                        | Al marcar un recurso como obligatorio, todos los estudiantes con perfilamiento completo lo ven en Moodle tras la siguiente sincronización, y al quitar la marca vuelve a depender de sus etiquetas. La ruta de cada estudiante lo muestra como obligatorio.                            |
 
-##### Seguimiento y evaluación (OE4)
+#### Seguimiento y evaluación (OE4)
 
 
 | ID          | Requisito                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Criterio de aceptación                                                                                                                                                                                                                                                                                                                                                              |
@@ -323,7 +327,7 @@ Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejempl
 | REQ-EVA-005 | El docente consulta la información completa de los estudiantes de sus grupos: identificación, perfil, ruta, interacción y resultados. El consentimiento informado indica al estudiante que el docente tiene acceso a esta información.                                                                                                                                                                                                                                                                                                                | El docente ve esos datos para cada estudiante de sus grupos sin restricciones, y puede identificar a quién desbloquearle un recurso (REQ-REC-010). El texto del consentimiento menciona este acceso.                                                                                                                                                                                |
 | REQ-EVA-006 | El docente consulta un panel con la distribución de perfiles por grupo (gráfico de radar por dimensión Felder-Silverman) y el avance de las rutas de sus estudiantes.                                                                                                                                                                                                                                                                                                                                                                                  | El panel muestra cada grupo con sus cuatro dimensiones del ILS y el avance de las rutas de los estudiantes de ese grupo.                                                                                                                                                                                                                                                             |
 
-##### Administración (OE1 a OE4)
+#### Administración (OE1 a OE4)
 
 
 | ID          | Requisito                                                                                                   | Criterio de aceptación                                                                                                                                                                                        |
@@ -332,7 +336,7 @@ Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejempl
 | REQ-ADM-002 | El administrador configura los cursos habilitados, los umbrales y las ponderaciones. | Los cambios se aplican sin modificar código. |
 | REQ-ADM-003 | El administrador gestiona el catálogo de objetos de aprendizaje.                                           | Puede dar de alta, editar y desactivar objetos con sus metadatos, y las etiquetas de acceso de cada objeto se asignan automáticamente a partir del formato, la unidad y el nivel que indicó quien lo subió. |
 
-#### 3.3 Requisitos de usabilidad
+### 3.3 Requisitos de usabilidad
 
 
 | ID          | Requisito                                                                      | Criterio de aceptación                                                                           |
@@ -342,7 +346,7 @@ Cada requisito lleva un identificador con el formato REQ-MÓDULO-NNN (por ejempl
 | REQ-USA-003 | La interfaz está en español, es clara y se adapta a computadora y teléfono. | Las funciones del estudiante se usan sin errores de visualización en ambos tipos de pantalla.    |
 | REQ-USA-004 | La interfaz sigue buenas prácticas de accesibilidad.                          | Se toma WCAG 2.1 nivel AA como referencia (propuesto).                                            |
 
-#### 3.4 Requisitos de rendimiento
+### 3.4 Requisitos de rendimiento
 
 Los valores son metas propuestas y se ajustan con el asesor y la prueba piloto.
 
@@ -354,27 +358,27 @@ Los valores son metas propuestas y se ajustan con el asesor y la prueba piloto.
 | REQ-RND-003 | La aplicación atiende a todos los estudiantes a la vez. | Soporta 80 usuarios concurrentes sin errores.                                                                                             |
 | REQ-RND-004 | La sincronización con Moodle no degrada la plataforma.  | La sincronización se ejecuta en un intervalo corto y configurable (propuesto: cada 5 minutos) y Moodle no pierde capacidad de respuesta. |
 
-#### 3.5 Requisitos lógicos de bases de datos
+### 3.5 Requisitos lógicos de bases de datos
 
-La aplicación guarda sus datos en tablas propias del plugin, en la base de datos PostgreSQL 16 de Moodle. Las etiquetas de acceso siguen siendo grupos de Moodle (decisión de la sección 2.5).
+La aplicación guarda sus datos en tablas propias del plugin (`mdl_trayecta_*`), dentro de la base de datos PostgreSQL 16 de Moodle. Las etiquetas de acceso se implementan mediante la infraestructura nativa de grupos y agrupamientos de Moodle (sección 2.5).
 
 
-| Entidad                  | Contenido principal                                                                                                                           |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Estudiante | Usuario de Moodle y seudónimo. Sus etiquetas de acceso (nivel por unidad y formato) se derivan de su perfil. |
-| Consentimiento           | Estudiante, texto aceptado y fecha.                                                                                                           |
-| Respuesta del cuestionario | Estudiante, parte del cuestionario (psicométrica, Felder o trayectoria), ítem y respuesta. |
-| Perfil | Estudiante, resultados de las tres partes del cuestionario, versión y vigencia. |
-| Objeto de aprendizaje    | Formato, unidad de competencia, nivel, duración y estado.                                                                                    |
-| Ruta y elemento de ruta  | Estudiante, objetos ordenados, versión y motivo.                                                                                             |
-| Interacción             | Estudiante, recurso, acceso, tiempo, secuencia y calificación parcial.                                                                       |
-| Evaluación              | Puntaje SUS y respuestas abiertas.                                                                                                            |
-| Parámetros | Cursos habilitados, umbrales y ponderaciones. |
-| Usuario y rol | Roles y permisos de Moodle de docentes y administradores. |
+| Entidad (`mdl_trayecta_*`) | Contenido principal |
+| -------------------------- | ------------------- |
+| `cohorte_estudiante`       | Identificador del estudiante de Moodle, asignación de cohorte (`experimental` o `control`), fecha de asignación y estado. |
+| `perfil`                   | Puntajes de las 4 dimensiones ILS (H1), preferencias de formato y disponibilidad de horas/franjas (H2), versión de perfil y vigencia. |
+| `psicometrico`             | Resultados, puntajes de escalas e índices del examen psicométrico obligatorio (H3), según el instrumento oficial indicado por el docente. |
+| `nivel_por_unidad`         | Historial de diagnósticos por unidad temática (H4): estudiante, número de unidad, fecha de aplicación, puntaje obtenido y nivel asignado (`bajo`, `medio`, `alto`). |
+| `ruta`                     | Identificador de ruta por estudiante, versión, componentes del motor híbrido usados y fecha de emisión (aplica a grupo experimental). |
+| `elemento_ruta`            | Recursos asignados en la ruta, orden pedagógico, bloque semanal, formato, duración estimada, motivo de recomendación y banderas de desbloqueo docente. |
+| `interaccion`              | Registros consolidados de eventos de navegación, accesos, tiempo de permanencia y calificaciones parciales (para ambos grupos). |
+| `evaluacion_sus`           | Puntuaciones de los 10 ítems de la escala SUS y respuestas al cuestionario de satisfacción (aplicado al grupo experimental al cierre). |
+| `catalogo_objetos`         | Recursos de estudio del curso con metadatos IEEE LOM (unidad temática, formato didáctico, duración, estilo y dificultad asociada). |
+| `consentimiento_informado` | Registro inmutable de aceptación del consentimiento informado con marca de tiempo. |
 
-Restricciones: integridad referencial entre entidades, un solo perfil vigente por estudiante y conservación del historial de perfiles y rutas. La aplicación no guarda contraseñas propias. Los datos se conservan tal cual en la base de datos, y es responsabilidad del investigador anonimizarlos al citar o publicar resultados.
+Restricciones: integridad referencial entre entidades, un solo perfil vigente por estudiante y conservación del historial de perfiles, diagnósticos de unidad y rutas. La aplicación no guarda contraseñas propias. Los datos se conservan en la base de datos de Moodle, y es responsabilidad del investigador anonimizarlos al exportar o publicar resultados académicos.
 
-#### 3.6 Restricciones de diseño
+### 3.6 Restricciones de diseño
 
 Moodle 5.1 con PHP 8.3 y PostgreSQL 16. La aplicación se construye como un plugin de Moodle, con su API de plugins.
 
@@ -386,7 +390,7 @@ Código y configuración en un repositorio de GitHub con licencia MIT.
 
 Pruebas unitarias con PHPUnit, la herramienta de pruebas de Moodle.
 
-#### 3.7 Cumplimiento de estándares
+### 3.7 Cumplimiento de estándares
 
 IEEE/ISO/IEC 29148:2018 para la especificación de requisitos.
 
@@ -398,7 +402,7 @@ Lineamientos éticos de analítica del aprendizaje (Slade & Prinsloo, 2013).
 
 Metadatos educativos con la lógica de IEEE LOM (Wiley, 2002).
 
-#### 3.8 Atributos del sistema de software
+### 3.8 Atributos del sistema de software
 
 
 | Atributo       | Requisito                                                                                                                        | Criterio de aceptación                                                             |
@@ -426,7 +430,7 @@ Requisito de operación:
 | ------------ | -------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | REQ-OPER-001 | Los datos de la aplicación se respaldan junto con los de Moodle y se pueden restaurar. | Una restauración de prueba recupera los datos al estado del respaldo. |
 
-### 4. Verificación
+## 4. Verificación
 
 
 | Método                                    | Qué verifica                                                                        | Requisitos                         |
@@ -443,12 +447,12 @@ Requisito de operación:
 
 Las evidencias de validación son el reporte de pruebas automatizadas, los registros de las pruebas de integración y de rendimiento, los puntajes SUS y las observaciones de la piloto. Un requisito se considera cumplido cuando su criterio de aceptación se verifica con al menos uno de estos métodos.
 
-#### Trazabilidad con los objetivos específicos:
+### Trazabilidad con los objetivos específicos:
 
 
-| Objetivo específico              | Módulo                   | Requisitos clave          |
+| Objetivo específico | Módulo | Requisitos clave |
 | --------------------------------- | ------------------------- | ------------------------- |
 | OE1. Integración dentro de Moodle | Integración con Moodle | REQ-INT-001 a REQ-INT-010 |
-| OE2. Cuestionario integral de perfilamiento | Perfilamiento | REQ-PER-001 a REQ-PER-011 (sin REQ-PER-003 a 005, retirados) |
-| OE3. Relación perfil-rutas       | Motor de recomendación   | REQ-REC-001 a REQ-REC-011 |
-| OE4. Usabilidad y funcionamiento  | Seguimiento y evaluación | REQ-EVA, REQ-USA, REQ-RND |
+| OE2. Cuestionario integral de perfilamiento | Perfilamiento | REQ-PER-001 a REQ-PER-011 (incluye ILS, cuestionario unificado y opción psicométrica) |
+| OE3. Relación perfil-rutas | Motor de recomendación | REQ-REC-001 a REQ-REC-011 |
+| OE4. Usabilidad, evaluación cuasiexperimental y funcionamiento | Seguimiento y evaluación | REQ-EVA-001 a REQ-EVA-004, REQ-USA, REQ-RND |

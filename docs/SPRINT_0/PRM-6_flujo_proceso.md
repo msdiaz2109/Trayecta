@@ -11,7 +11,7 @@
 
 **Punto de partida.** El flujo parte de las conclusiones de PRM-5. El estudiante usa su sesión de Moodle y no hace ningún registro fuera de la plataforma. Las restricciones de acceso y la lectura de actividad solo son posibles desde dentro de Moodle. Por eso se describe con la variante **plugin** recomendada en PRM-5, todavía pendiente de aprobación del asesor (ERS §2.8). En los diagramas, **Moodle** (azul) es lo que la plataforma ya hace por sí misma y **Trayecta** (verde) es lo que agrega el plugin. Lo marcado como *[Pendiente]* depende de decisiones abiertas del ERS.
 
-## 1. Recorrido del estudiante
+## 1. Recorrido del estudiante y diseño cuasiexperimental
 
 ```mermaid
 sequenceDiagram
@@ -20,31 +20,47 @@ sequenceDiagram
     participant M as Moodle
     participant T as Trayecta (plugin)
     E->>M: Inicia sesión y entra al curso
-    M->>T: Identidad, inscripción y rol (sesión de Moodle)
-    alt Perfilamiento incompleto
-        M-->>E: Ve solo actividades calificadas y exámenes (REQ-INT-008)
-        T-->>E: Aviso con acceso al perfilamiento
-        E->>T: Acepta el consentimiento informado (REQ-PER-001)
-        E->>T: Contesta el cuestionario integral: psicométrica, ILS y trayectoria (REQ-PER-009)
-        T->>T: Calcula el perfil y genera la ruta (REQ-PER-006, REQ-REC-005)
-        T->>M: Asigna etiquetas como grupos (REQ-INT-004)
+    M->>T: Identidad, inscripción y asignación de cohorte (Experimental o Control)
+    alt Estudiante del Grupo de Control
+        M-->>E: Accede a todos los recursos didácticos de manera uniforme (sin restricciones de Trayecta)
+        Note over E,M: Presenta actividades calificadas y exámenes oficiales comunes (REQ-INT-008)
+    else Estudiante del Grupo Experimental
+        alt Perfilamiento inicial incompleto
+            M-->>E: Ve solo actividades calificadas y exámenes (REQ-INT-008)
+            T-->>E: Aviso con acceso a perfilamiento inicial
+            E->>T: Acepta consentimiento informado (REQ-PER-001)
+            E->>T: Contesta fase inicial: H1 (ILS), H2 (Formatos/Tiempo) y H3 (Psicométrico obligatorio)
+            T->>T: Construye perfil base y asigna etiquetas iniciales de formato (REQ-PER-006)
+        end
+        rect rgb(240, 253, 244)
+            Note over E,T: Cada vez que inicia una nueva unidad temática (modular)
+            T-->>E: Habilita Herramienta 4 (examen diagnóstico de la unidad) con reactivos del docente
+            E->>M: Presenta examen diagnóstico de la unidad dentro de Moodle (REQ-PER-005)
+            T->>T: Calcula puntaje y asigna etiqueta de nivel: U{n}-bajo, medio o alto (REQ-PER-011)
+            T->>M: Actualiza etiquetas de grupo y restricciones de la unidad (REQ-INT-004)
+        end
+        T-->>E: Muestra ruta recomendada de la unidad y motivo de cada recurso (REQ-REC-008)
+        M-->>E: Ve en el curso los recursos adaptados a su estilo y nivel de la unidad
+        E->>M: Estudia con los recursos recomendados
+        M->>M: Registra eventos de interacción en el log (REQ-INT-003)
+        E->>T: Al concluir el curso contesta SUS y satisfacción (REQ-EVA-003)
     end
-    T-->>E: Muestra su perfil y su ruta con el motivo de cada recurso (REQ-REC-008)
-    M-->>E: Ve solo los recursos de su ruta, los obligatorios y los desbloqueados
-    E->>M: Usa los recursos
-    M->>M: Registra la actividad en el log
-    Note over M,T: El proceso periódico ajusta perfil, ruta y etiquetas (sección 4)
-    E->>T: Contesta SUS y satisfacción después de usar la ruta (REQ-EVA-003)
+    Note over M,T: Al final del curso se comparan calificaciones oficiales finales y retención (REQ-EVA-002)
 ```
 
-1. **Entrada.** El estudiante inicia sesión en Moodle y entra al curso. Trayecta lo reconoce por su sesión: no hay un segundo inicio de sesión.
-2. **Sin perfil completo** (REQ-PER-007). Las restricciones por etiquetas le ocultan los recursos de estudio. Sí ve las actividades calificadas y los exámenes, que nunca se restringen (REQ-INT-008). Trayecta le muestra un aviso con acceso al perfilamiento.
-3. **Consentimiento** (REQ-PER-001). Es obligatorio y va antes de todo. Si no lo acepta, no avanza ni se guarda ninguna respuesta.
-4. **Cuestionario integral** (REQ-PER-009). Tiene tres partes: psicométrica, ILS de 44 ítems y trayectoria académica. La meta es completarlo en 30 minutos o menos (REQ-USA-002). *[Pendiente]* El instrumento psicométrico y los datos de trayectoria (REQ-PER-010, REQ-PER-011).
-5. **Perfil, ruta y etiquetas.** Trayecta calcula el perfil y el motor genera la ruta: solo con reglas mientras no se supere el umbral de arranque en frío (REQ-REC-004). Después asigna las etiquetas de nivel por unidad y de formato como grupos de Moodle. *[Pendiente]* De dónde salen el formato y el nivel por unidad (ERS §2.8, punto 4).
-6. **Su ruta.** En Trayecta ve su perfil y su ruta, con un motivo breve por recurso. En el curso de Moodle ve solo los recursos cuya combinación de etiquetas cumple, más los obligatorios y los que el docente le desbloqueó. *[Pendiente]* Si la ruta conserva los bloques semanales (ERS §2.8, punto 5).
-7. **Uso.** Moodle registra cada acción en su log. El proceso periódico ajusta el perfil, la ruta y las etiquetas (REQ-PER-008, REQ-REC-006). Al acumular evidencia, pasa de dos etiquetas de formato a una (REQ-REC-009).
-8. **Evaluación.** Después de usar la ruta contesta la escala SUS y el cuestionario de satisfacción (REQ-EVA-003).
+1. **Entrada y reconocimiento de cohorte.** El estudiante inicia sesión en Moodle y entra al curso. Trayecta lo reconoce por su sesión y verifica su cohorte:
+   - **Grupo de Control:** No recibe restricciones por etiquetas de Trayecta; cursa la materia con el modelo uniforme estándar de Moodle.
+   - **Grupo Experimental:** Entra al flujo de perfilamiento y rutas personalizadas.
+2. **Perfilamiento inicial (REQ-PER-007, REQ-PER-009).** El estudiante experimental que aún no cuenta con perfil inicial solo ve las actividades calificadas y exámenes (que nunca se restringen, REQ-INT-008). Tras aceptar el consentimiento informado obligatorio (REQ-PER-001), responde las tres herramientas iniciales en un solo flujo:
+   - **Herramienta 1:** *ILS de Felder-Silverman* (44 reactivos).
+   - **Herramienta 2:** *Preferencias de formato* (escala 1 a 5) y *disponibilidad de tiempo* (horas y franjas).
+   - **Herramienta 3:** *Módulo psicométrico obligatorio* (batería oficial indicada por el docente/asesor).
+3. **Diagnóstico modular por unidad temática (Herramienta 4, REQ-PER-005 / REQ-PER-011).** El diagnóstico de conocimientos previos no se contesta al inicio del curso, sino **dentro de Moodle cada vez que va a comenzar una nueva unidad**. El profesor proporciona el banco oficial de preguntas. Al contestarlo, el plugin calcula su nivel (`U{n}-bajo`, `U{n}-medio` o `U{n}-alto`) y publica de inmediato su ruta adaptada para esa unidad temática.
+4. **Visualización de ruta.** En el curso de Moodle, el estudiante experimental ve los recursos que corresponden a su combinación de etiquetas de nivel y formato, más los obligatorios (REQ-REC-011) y los desbloqueados por el docente (REQ-REC-010).
+5. **Ajuste continuo.** Moodle registra cada acción en el log. La tarea programada de Trayecta actualiza perfiles y ajusta recomendaciones con base en el uso real (REQ-PER-008, REQ-REC-006).
+6. **Evaluación de fin de curso (REQ-EVA-002, REQ-EVA-003).** Al finalizar el semestre:
+   - Los estudiantes del grupo experimental contestan la escala SUS de usabilidad y preguntas cualitativas.
+   - La aplicación genera el análisis comparativo entre el Grupo Experimental y el Grupo de Control, contrastando calificaciones finales en exámenes oficiales (REQ-INT-008), porcentaje de aprobación y retención.
 
 ## 2. Recorrido del docente: ciclo de un recurso
 

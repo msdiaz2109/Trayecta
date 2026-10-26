@@ -1,7 +1,7 @@
-# PRM-1 · Tabla de reglas entre el ILS y los formatos
+# PRM-2 · Tabla de reglas entre el ILS y los formatos
 
 > **Proyecto:** Aplicación web de perfilamiento multidimensional del estudiante y motor de recomendación de rutas de aprendizaje integrado a Moodle  
-> **Tarea Jira:** PRM-1  
+> **Tarea Jira:** PRM-2  
 >  
 > **Requisitos relacionados:** REQ-REC-002  
 >  
@@ -67,7 +67,7 @@ Perfil: Activo 7, Sensorial 3, Visual 9, Global 5.
 | texto | – | – | – | – | **0** |
 | podcast | – | – | – | – | **0** |
 
-## 4. Criterio de aceptación (PRM-1)
+## 4. Criterio de aceptación (PRM-2)
 
 - [x] Cubre las cuatro dimensiones con sus dos polos.
 - [x] Cada polo tiene al menos un formato favorecido, con justificación y cita.
