@@ -15,6 +15,7 @@ Autores: Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía y Salvador Alejos
 | Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía | 2026-10-20 | Cambio de alcance: el sistema vive solo dentro de Moodle (configuración nativa o plugin) y el perfil pasa a un cuestionario integral (psicométrico, Felder y trayectoria). | 1.1 |
 | Aguilar Garnica Alfredo | 2026-10-25 | Resuelto el pendiente 1 de la sección 2.8: variante de implementación = plugin de Moodle (`local_trayecta`), con base en el estudio de viabilidad (PRM-5). Pendiente de ratificación del asesor. | 1.2 |
 | Aguilar Garnica Alfredo, Meneses Díaz Mariana Sofía, Salvador Alejos Soria | 2026-10-25 | Ajuste de arquitectura y esquema de perfilamiento: definición de 4 herramientas (H1: ILS Felder-Silverman; H2: preferencias de formato y disponibilidad; H3: módulo psicométrico obligatorio según indique el docente; H4: examen diagnóstico por unidad dentro de la plataforma aplicado al inicio de cada nueva unidad con reactivos del docente); y evaluación cuasiexperimental de impacto académico (cohorte experimental con Trayecta vs. cohorte de control con Moodle estándar). | 1.3 |
+| Aguilar Garnica Alfredo | 2026-10-25 | Corrige la población estimada a 25-30 estudiantes (grupo único, no 2-3 grupos), dividido en dos cohortes de 15 para la evaluación cuasiexperimental (confirmado con Meneses Díaz Mariana Sofía). Ajusta en consecuencia la meta de concurrencia de REQ-RND-003 y su método de verificación. | 1.4 |
 
 > En la versión 1.3 se estructura el perfilamiento en cuatro herramientas: tres iniciales (H1: ILS Felder-Silverman, H2: preferencias de formato y disponibilidad de tiempo, H3: módulo psicométrico obligatorio según indique el docente) y una modular (H4: examen diagnóstico por unidad temático, aplicado dentro de Moodle al comenzar cada nueva unidad con reactivos proporcionados por el docente). Asimismo, se establece el diseño cuasiexperimental de evaluación dividiendo al grupo en dos cohortes (experimental con Trayecta y control con Moodle estándar) para comparar el rendimiento académico en evaluaciones finales oficiales.
 
@@ -137,7 +138,7 @@ No hay comunicación por red entre la aplicación y Moodle, porque la aplicació
 
 #### 2.1.6 Restricciones de memoria
 
-La población estimada es de 60 a 80 estudiantes en 2 o 3 grupos, por lo que no se prevén restricciones críticas de memoria. El almacenamiento crecerá sobre todo con los registros de interacción y debe confirmarse con la administración del servidor.
+La población estimada es de 25 a 30 estudiantes en un grupo, dividido en dos cohortes de 15 para la evaluación cuasiexperimental (sección 2.5), por lo que no se prevén restricciones críticas de memoria. El almacenamiento crecerá sobre todo con los registros de interacción y debe confirmarse con la administración del servidor.
 
 #### 2.1.7 Operaciones
 
@@ -178,7 +179,7 @@ La aplicación ofrece funciones diferenciadas para cada rol del sistema:
 
 | Usuario       | Descripción                                                                                                                                                                     |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Estudiante    | Alumno de ISC inscrito en Fundamentos de Ingeniería de Software, con experiencia básica en Moodle y sin conocimientos técnicos de la aplicación. Son entre 60 y 80 personas. |
+| Estudiante    | Alumno de ISC inscrito en Fundamentos de Ingeniería de Software, con experiencia básica en Moodle y sin conocimientos técnicos de la aplicación. Son entre 25 y 30 personas, divididas en dos cohortes de 15 (grupo experimental y grupo de control). |
 | Docente       | Responsable de la materia. Publica los contenidos, consulta los paneles y no necesita conocimientos de programación.                                                            |
 | Administrador | Personal técnico que instala, configura y respalda el sistema. Exportan datos anonimizados para el análisis.                                                                   |
 
@@ -216,7 +217,7 @@ El servidor institucional ofrece las versiones indicadas y conexión estable.
 
 **Forma de obtener el tiempo en recurso (decidido).** El tiempo se estima con el intervalo entre accesos consecutivos del estudiante (REQ-INT-003), con un tope para descartar periodos de inactividad. El valor del tope se define con la prueba piloto y la estimación se documenta en el método como una aproximación. Las calificaciones parciales, que también se obtienen de Moodle, complementan esta señal.
 
-**Valores objetivo de rendimiento (decidido).** Las metas de la sección 3.4 (respuesta de 3 y 10 segundos, 80 usuarios concurrentes) se mantienen como propuestas hasta medirlas. Se fijan con una prueba de carga que simule a los 80 estudiantes y con la prueba piloto de 10 voluntarios, antes de aplicar el sistema a los grupos completos. Se verifican como percentil 95: por ejemplo, el 95 % de las respuestas en 3 segundos o menos.
+**Valores objetivo de rendimiento (decidido).** Las metas de la sección 3.4 (respuesta de 3 y 10 segundos, 30 usuarios concurrentes) se mantienen como propuestas hasta medirlas. Se fijan con una prueba de carga que simule a los 30 estudiantes (con margen sobre los 25-30 reales) y con la prueba piloto de 10 voluntarios, antes de aplicar el sistema al grupo completo. Se verifican como percentil 95: por ejemplo, el 95 % de las respuestas en 3 segundos o menos.
 
 **Tiempo de retención de los datos (decidido).** Los datos de los estudiantes se mantienen tal cual en la base de datos, sin eliminarlos ni transformarlos. Es responsabilidad del investigador anonimizarlos cada vez que cite o publique resultados, de modo que ningún dato identificable aparezca en artículos, memorias, presentaciones o reportes (REQ-SEG-003). El aviso de privacidad y el consentimiento informado (REQ-PER-001) informan al estudiante de esta conservación.
 
@@ -355,7 +356,7 @@ Los valores son metas propuestas y se ajustan con el asesor y la prueba piloto.
 | ----------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | REQ-RND-001 | Las páginas responden con rapidez en carga normal.      | Respuesta de 3 segundos o menos.                                                                                                          |
 | REQ-RND-002 | La generación de una ruta es ágil.                     | Ruta generada en 10 segundos o menos.                                                                                                     |
-| REQ-RND-003 | La aplicación atiende a todos los estudiantes a la vez. | Soporta 80 usuarios concurrentes sin errores.                                                                                             |
+| REQ-RND-003 | La aplicación atiende a todos los estudiantes a la vez. | Soporta 30 usuarios concurrentes sin errores.                                                                                             |
 | REQ-RND-004 | La sincronización con Moodle no degrada la plataforma.  | La sincronización se ejecuta en un intervalo corto y configurable (propuesto: cada 5 minutos) y Moodle no pierde capacidad de respuesta. |
 
 ### 3.5 Requisitos lógicos de bases de datos
@@ -439,7 +440,7 @@ Requisito de operación:
 | Pruebas de integración | Lectura de datos de Moodle, proceso periódico y publicación de rutas (etiquetas y restricciones) | REQ-INT, REQ-EVA-001 |
 | Pruebas funcionales                        | Flujos completos de estudiante, docente y administrador                              | REQ-PER, REQ-REC, REQ-EVA, REQ-ADM |
 | Pruebas de seguridad                       | Control de acceso por rol, HTTPS y exposición de datos, con base en OWASP Top 10    | REQ-SEG, REQ-ADM-001               |
-| Pruebas de rendimiento                     | Carga simulada de 80 usuarios y tiempos de respuesta                                 | REQ-RND                            |
+| Pruebas de rendimiento                     | Carga simulada de 30 usuarios y tiempos de respuesta                                 | REQ-RND                            |
 | Prueba piloto con 10 voluntarios | Claridad del cuestionario integral y tiempo de respuesta | REQ-USA-002, REQ-PER |
 | Escala SUS y cuestionario de satisfacción | Usabilidad percibida y retroalimentación abierta                                    | REQ-USA-001, REQ-EVA-002           |
 | Revisiones técnicas de código            | Calidad, seguridad y mantenibilidad antes de integrar cambios                        | REQ-SEG, mantenibilidad            |
