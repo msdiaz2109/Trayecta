@@ -34,9 +34,9 @@ Moodle **no crea claves foráneas en PostgreSQL**: la base de pruebas tiene 504 
 
 - **Identidad** (`user`): nombre, usuario, correo, `idnumber` (la matrícula, si la institución la carga), institución, departamento, idioma, zona horaria, primer y último acceso.
 - **Situación en el curso:** inscripción y su estado, rol y grupos.
-- **Historial en la plataforma:** inscripciones, calificaciones y finalización de otros cursos. Es un insumo posible para la *trayectoria académica* (REQ-PER-011); su alcance depende de lo que haya en la instancia institucional.
+- **Historial en la plataforma:** inscripciones, calificaciones y finalización de otros cursos; insumo posible para enriquecer el perfil, según lo que haya en la instancia institucional.
 - **Actividad** (`logstore_standard_log`): evento, recurso, contexto y hora de cada acción. De aquí salen los accesos, la secuencia de navegación y el tiempo entre accesos (REQ-INT-003).
-- **No disponible:** el estilo de aprendizaje, la parte psicométrica y el consentimiento. Esos datos se obtienen con el cuestionario integral, dentro de Moodle; no son un registro aparte.
+- **No disponible:** el estilo de aprendizaje, la parte psicométrica y las preferencias de formato/disponibilidad. Esos datos se obtienen con las herramientas de perfilamiento (H1 a H3 en la fase inicial, H4 por unidad), dentro de Moodle; no son un registro aparte.
 
 ## 3. Vías de conexión
 
