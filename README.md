@@ -31,6 +31,7 @@ Trayecta/
 │   ├── Plan de Pruebas.md                     # Plan de pruebas PHPUnit y cuasiexperimentales (v1.0)
 │   ├── Backlog del producto.md                # Planificación de los 10 sprints
 │   ├── Flujo de trabajo y control de versiones (GitHub).md # Convenciones de Git
+│   ├── Protocolo_Bonito.docx                  # Carta compromiso original del Banco de Proyectos (formato oficial)
 │   └── SPRINT_0/                              # Entregables metodológicos y de viabilidad
 │       ├── Backlog Sprint 0.md
 │       ├── PRM-1_tabla_reglas_ILS_formatos.md # Matriz estilos ILS vs. formatos
