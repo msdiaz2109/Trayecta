@@ -1,0 +1,3 @@
+# El plugin es código PHP de Moodle: su guía de estilo exige fin de línea
+# Unix. Sin esto, git normaliza a CRLF en checkouts de Windows (core.autocrlf).
+*.php text eol=lf
