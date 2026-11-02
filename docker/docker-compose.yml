@@ -17,6 +17,10 @@ x-moodle: &moodle
     - ./php/zz-trayecta.ini:/usr/local/etc/php/conf.d/zz-trayecta.ini:ro
     - moodledata:/var/www/moodledata
     - ${BACKUPS_DIR}:/backups:ro
+    # Plugin propio: vive en el repo (../local/trayecta), no en MOODLE_DIR.
+    # Un enlace simbólico en MOODLE_DIR no sirve: el contenedor no ve rutas
+    # fuera de sus volúmenes, así que se monta directo.
+    - ../local/trayecta:/var/www/html/public/local/trayecta
   depends_on:
     db:
       condition: service_healthy
