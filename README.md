@@ -27,6 +27,7 @@ Trayecta/
 ├── docker/                                    # Entorno local: Moodle 5.1 + PHP 8.3 + PostgreSQL 16
 ├── docs/
 │   ├── ERS.md                                 # Especificación de Requisitos de Software (v1.3)
+│   ├── Protocolo de Investigación.md          # Protocolo de titulación (Banco de Proyectos), actualizado a la arquitectura de plugin
 │   ├── Manual Tecnico.md                      # Manual técnico de arquitectura del plugin (v1.0)
 │   ├── Plan de Pruebas.md                     # Plan de pruebas PHPUnit y cuasiexperimentales (v1.0)
 │   ├── Backlog del producto.md                # Planificación de los 10 sprints
