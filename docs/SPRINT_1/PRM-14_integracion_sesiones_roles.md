@@ -45,7 +45,20 @@ La clase `\local_trayecta\local\session_role_resolver::resolve(int $courseid)` e
 
 ---
 
-## 4. Estructura de archivos implementados
+## 4. Usuarios y contraseñas para pruebas locales
+
+Para comprobar la página de diagnóstico de roles en el entorno local Docker ([http://localhost:8080/local/trayecta/index.php?courseid=2](http://localhost:8080/local/trayecta/index.php?courseid=2)), se configuraron las siguientes credenciales para cada rol:
+
+| Rol | Usuario de prueba | Contraseña | Datos en Moodle | Resultado esperado en Trayecta |
+| --- | --- | --- | --- | --- |
+| **Administrador** | `admin` | `Admin123!` | Administrador institucional | Rol: **Administrador** (acceso a configuración y cohortes) |
+| **Docente** | `docente1` | `Clave123!` | Claudio Florian (`editingteacher` en curso 2) | Rol: **Docente** (acceso a catálogo, panel y desbloqueos) |
+| **Estudiante** | `estudiante1` | `Clave123!` | Mariana Meneses (Matrícula: `23121132`, `student` en curso 2) | Rol: **Estudiante** (acceso a consentimiento, H1-H4 y rutas) |
+| **No inscrito** | *(Crear o usar cuenta externa)* | — | Usuario autenticado no inscrito en curso 2 | Rol: **Sin acceso** (acceso rechazado según REQ-INT-001) |
+
+---
+
+## 5. Estructura de archivos implementados
 
 ```text
 local/trayecta/
@@ -66,16 +79,16 @@ local/trayecta/
 
 ---
 
-## 5. Verificación con los tres roles
+## 6. Verificación con los tres roles
 
-### 5.1 Página de prueba en navegador (`/local/trayecta/index.php?courseid=<id>`)
-Al ingresar a un curso en Moodle con cualquiera de los tres roles y hacer clic en **«Trayecta»** en la navegación del curso (o visitar directamente `/local/trayecta/index.php?courseid=<id>`), la página despliega una tabla de diagnóstico con:
+### 6.1 Página de prueba en navegador (`/local/trayecta/index.php?courseid=<id>`)
+Al ingresar a un curso en Moodle con cualquiera de los tres roles y hacer clic en **«Trayecta»** en la navegación del curso (o visitar directamente `/local/trayecta/index.php?courseid=2`), la página despliega una tabla de diagnóstico con:
 1. **Nombre completo (`$USER`):** obtenido de la sesión activa sin pedir inicio de sesión adicional.
 2. **Usuario de Moodle, correo institucional y número de control (`idnumber`).**
 3. **Curso actual** e indicador de **inscripción activa (`is_enrolled`)**.
-4. **Roles asignados en Moodle (`get_user_roles`)** y **Rol reconocido por Trayecta** (`Estudiante`, `Docente` o `Administrador`), junto con la notificación del flujo que le corresponde.
+4. **Roles asignados en Moodle (`get_user_roles`)** y **Rol reconocido por Trayecta** (`Estudiante`, `Docente` o `Administrador`), junto con la notificación en español del flujo que le corresponde.
 
-### 5.2 Prueba automatizada con PHPUnit
+### 6.2 Prueba automatizada con PHPUnit
 El archivo [session_role_resolver_test.php](file:///c:/Users/Mariana/Desktop/Trayecta/local/trayecta/tests/session_role_resolver_test.php) verifica de forma automatizada los cuatro escenarios en Moodle:
 1. **Estudiante inscrito (`student`):** reconoce su `userid`, matrícula (`23121132`), `isenrolled = true`, `trayectarole = 'student'` y `canaccess = true`.
 2. **Docente inscrito (`editingteacher`):** reconoce `isenrolled = true`, `isteacher = true`, `trayectarole = 'teacher'` y `canaccess = true`.
@@ -84,14 +97,15 @@ El archivo [session_role_resolver_test.php](file:///c:/Users/Mariana/Desktop/Tra
 
 Comando para ejecutar la prueba en el contenedor de Moodle:
 ```bash
-docker compose exec -u www-data -w /var/www/html moodle vendor/bin/phpunit local/trayecta/tests/session_role_resolver_test.php
+docker compose exec -u www-data -w /var/www/html moodle vendor/bin/phpunit public/local/trayecta/tests/session_role_resolver_test.php
 ```
 
 ---
 
-## 6. Criterios de aceptación cumplidos (PRM-14)
+## 7. Criterios de aceptación cumplidos (PRM-14)
 
 - [x] Uso de las APIs nativas de Moodle (`$USER`, `has_capability()`, `is_enrolled()`, `is_siteadmin()`, `get_user_roles()`) sin registros ni contraseñas adicionales (`REQ-INT-001`).
 - [x] Página de prueba creada en [local/trayecta/index.php](file:///c:/Users/Mariana/Desktop/Trayecta/local/trayecta/index.php) que muestra el nombre del usuario, su rol en el curso y si está inscrito.
 - [x] Verificación de los tres roles (**Estudiante**, **Docente**, **Administrador**) y rechazo de usuarios no inscritos mediante prueba PHPUnit ([session_role_resolver_test.php](file:///c:/Users/Mariana/Desktop/Trayecta/local/trayecta/tests/session_role_resolver_test.php)).
+- [x] Credenciales de prueba documentadas para verificación funcional en el entorno de desarrollo.
 - [x] Funciones nativas de Moodle documentadas en este entregable (`MT 2.3`).
