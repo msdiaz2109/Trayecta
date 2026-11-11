@@ -23,7 +23,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_trayecta';
-$plugin->version   = 2026102800;
+$plugin->version   = 2026110200;
 $plugin->requires  = 2025100600; // Moodle 5.1 (rama 501).
 $plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '0.1.0';
+$plugin->release   = '0.1.1';

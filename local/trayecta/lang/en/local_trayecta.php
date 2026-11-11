@@ -26,3 +26,27 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Trayecta';
+$string['session_page_title'] = 'Trayecta · Session and role verification';
+$string['session_page_heading'] = 'Session and role identification in Trayecta (PRM-14)';
+$string['field_label'] = 'Field';
+$string['value_label'] = 'Detected value in Moodle';
+$string['user_fullname'] = 'Full name ($USER)';
+$string['user_username'] = 'Moodle username';
+$string['user_email'] = 'Institutional email';
+$string['user_idnumber'] = 'Student ID (idnumber)';
+$string['course_name'] = 'Current course';
+$string['course_enrolled'] = 'Actively enrolled in course? (is_enrolled)';
+$string['moodle_roles'] = 'Assigned roles in course (get_user_roles)';
+$string['trayecta_role'] = 'Role recognized by Trayecta';
+$string['trayecta_action'] = 'Corresponding plugin workflow';
+$string['enrolled_yes'] = 'Yes (active enrolment)';
+$string['enrolled_no'] = 'No';
+$string['not_assigned'] = 'Not assigned';
+$string['role_admin'] = 'Administrator';
+$string['role_teacher'] = 'Teacher';
+$string['role_student'] = 'Student';
+$string['role_none'] = 'No access (user not enrolled)';
+$string['action_admin'] = 'Access granted as Administrator: global plugin configuration, cohort management, and CSV export.';
+$string['action_teacher'] = 'Access granted as Teacher: learning object classification, group analytics dashboard, and resource unlocking.';
+$string['action_student'] = 'Access granted as Student: informed consent, profiling instruments (H1-H4), and personalized learning path.';
+$string['action_none'] = 'Access denied (REQ-INT-001): the authenticated user is not enrolled in this course.';
