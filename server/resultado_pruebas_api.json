@@ -1,0 +1,175 @@
+{
+    "fecha_ejecucion": "2026-11-12T19:49:10.339490",
+    "servidor": "http://165.227.200.92:8080",
+    "curso_piloto": "ISC-LA-2026",
+    "llamadas": [
+        {
+            "numero": 1,
+            "funcion": "core_webservice_get_site_info",
+            "estado": "EXITOSO",
+            "resumen": {
+                "sitename": "Servidor de Pruebas Moodle 5.1",
+                "release": "5.1.8+ (Build: 20261030)",
+                "userid": 2
+            }
+        },
+        {
+            "numero": 2,
+            "funcion": "core_course_get_courses_by_field",
+            "estado": "EXITOSO",
+            "resumen": {
+                "course_id": 2,
+                "fullname": "Analítica de Datos y Aprendizaje Adaptativo - Prueba Piloto",
+                "shortname": "ISC-LA-2026"
+            }
+        },
+        {
+            "numero": 3,
+            "funcion": "core_enrol_get_enrolled_users",
+            "estado": "EXITOSO",
+            "total_inscritos": 3,
+            "usuarios": [
+                {
+                    "id": 5,
+                    "username": "estudiante_prueba",
+                    "fullname": "Alumno Prueba ISC",
+                    "roles": [
+                        "student"
+                    ]
+                },
+                {
+                    "id": 6,
+                    "username": "docente_prueba",
+                    "fullname": "Claudio Docente ISC",
+                    "roles": [
+                        "editingteacher"
+                    ]
+                },
+                {
+                    "id": 7,
+                    "username": "admin_prueba",
+                    "fullname": "Admin Sistemas ITM",
+                    "roles": [
+                        "manager"
+                    ]
+                }
+            ]
+        },
+        {
+            "numero": 4,
+            "funcion": "core_course_get_contents",
+            "estado": "EXITOSO",
+            "secciones": [
+                {
+                    "section": 0,
+                    "name": "General",
+                    "modulos_count": 1,
+                    "modulos": [
+                        "forum: Avisos"
+                    ]
+                },
+                {
+                    "section": 1,
+                    "name": "Unidad 1: Evaluación Diagnóstica (Pre-test) y Foro de Discusión",
+                    "modulos_count": 1,
+                    "modulos": [
+                        "forum: Foro 1: Diagnóstico sobre Analítica de Datos y Aprendizaje Adaptativo"
+                    ]
+                },
+                {
+                    "section": 2,
+                    "name": "Unidad 2: Modelado Dimensional y Procesos ETL",
+                    "modulos_count": 1,
+                    "modulos": [
+                        "assign: Tarea 1: Diseño de Modelo Estrella y Pipeline ETL"
+                    ]
+                },
+                {
+                    "section": 3,
+                    "name": "Unidad 3: Visualización Analítica y Dashboards en Power BI",
+                    "modulos_count": 1,
+                    "modulos": [
+                        "assign: Tarea 2: Implementación de Dashboard de Indicadores en Power BI"
+                    ]
+                },
+                {
+                    "section": 4,
+                    "name": "Unidad 4: Evaluación Final (Post-test) y Encuestas SUS / TAM",
+                    "modulos_count": 1,
+                    "modulos": [
+                        "quiz: Evaluación Final (Post-test) y Validación de Conocimientos"
+                    ]
+                }
+            ]
+        },
+        {
+            "numero": 5,
+            "funcion": "mod_forum_get_forums_by_courses + mod_forum_get_forum_discussions",
+            "variable_pareto": "Participación en foros",
+            "estado": "EXITOSO",
+            "total_hilos": 1,
+            "detalle": [
+                {
+                    "foro": "Foro 1: Diagnóstico sobre Analítica de Datos y Aprendizaje Adaptativo",
+                    "hilo": "Impacto del modelo dimensional de Kimball en analítica educativa",
+                    "autor": "Alumno Prueba ISC",
+                    "replicas": 1
+                }
+            ]
+        },
+        {
+            "numero": 6,
+            "funcion": "mod_assign_get_assignments + mod_assign_get_submissions",
+            "variable_pareto": "Entregas a tiempo",
+            "estado": "EXITOSO",
+            "entregas": []
+        },
+        {
+            "numero": 7,
+            "funcion": "gradereport_user_get_grade_items",
+            "variable_pareto": "Calificaciones parciales y final",
+            "estado": "EXITOSO",
+            "calificaciones": [
+                {
+                    "item": "Valoración para Foro 1: Diagnóstico sobre Analítica de Datos y Aprendizaje Adaptativo",
+                    "itemmodule": "forum",
+                    "calificacion": null,
+                    "maximo": 100
+                },
+                {
+                    "item": "Tarea 1: Diseño de Modelo Estrella y Pipeline ETL",
+                    "itemmodule": "assign",
+                    "calificacion": 95,
+                    "maximo": 100
+                },
+                {
+                    "item": "Tarea 2: Implementación de Dashboard de Indicadores en Power BI",
+                    "itemmodule": "assign",
+                    "calificacion": 88,
+                    "maximo": 100
+                },
+                {
+                    "item": "Evaluación Final (Post-test) y Validación de Conocimientos",
+                    "itemmodule": "quiz",
+                    "calificacion": 92,
+                    "maximo": 100
+                },
+                {
+                    "item": "PROMEDIO TOTAL DEL CURSO",
+                    "itemmodule": null,
+                    "calificacion": 275,
+                    "maximo": 300
+                }
+            ]
+        },
+        {
+            "numero": 8,
+            "funcion": "core_completion_get_activities_completion_status",
+            "variable_pareto": "Frecuencia de avance / Finalización",
+            "estado": "EXITOSO",
+            "actividades_completadas": 3,
+            "total_actividades": 4,
+            "porcentaje_avance": 75.0
+        }
+    ]
+}
